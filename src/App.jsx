@@ -1,7 +1,11 @@
-import { Router } from "./Routes"
+import { Router } from './Routes'
 
 function App() {
-    <Router/>
+  return (
+    <>
+      <Router />
+    </>
+  )
 }
 
 export default App
