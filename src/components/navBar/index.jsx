@@ -9,10 +9,10 @@ export function NavBar() {
       <ul className="flex w-full justify-between">
         <div className="flex gap-8">
           <li className="text-fun2 hover:text-rosa-300">
-            <Link to={'#produtos'}>Produtos</Link>
+            <Link to={'/'}>Produtos</Link>
           </li>
           <li className=" text-fun2">
-            <Link to={'#sobre'}>Sobre</Link>
+            <Link to={'/'}>Sobre</Link>
           </li>
         </div>
 
