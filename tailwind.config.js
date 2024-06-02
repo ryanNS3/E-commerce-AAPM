@@ -11,9 +11,17 @@ export default {
     },
 
     extend: {
+      boxShadow: {
+        'card-e-nexus': '0px 4px 24px #E9E9E9',
+      },
       animation: {
         modalAnimation: 'rightToLeft 0.3s ease-in-out forwards',
         topToButton: 'topToButton 0.3s ease-in-out forwards',
+      },
+
+      transitionDuration:{
+        "600" : '600ms',
+        "800": '800ms'
       },
 
       keyframes: {
@@ -120,7 +128,7 @@ export default {
         {
           lineHeight: '31px',
           letterSpacing: '2%',
-          fontWeight: '700',
+          fontWeight: '600',
           case: 'upper',
         },
       ],
