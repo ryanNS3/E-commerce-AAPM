@@ -1,30 +1,30 @@
 import React from 'react'
-
 import { SearchIcon } from '../../assets/search'
 
 export function Search({ valueForSearchProdut, onChange }) {
-  const [isEnableInputSearch, setIsEnableInputSearch] = React.useState(false)
-  const stylesDisableInput = ' w-0 opacity-0'
-  const stylesEnableInput = 'w-full opacity-1 border border-rosa-300'
-  const styleInput = isEnableInputSearch
-    ? stylesEnableInput
-    : stylesDisableInput
+  const [isInputFocused, setIsInputFocused] = React.useState(false)
 
-  function handleSearch(event) {
-    event.preventDefault()
-    setIsEnableInputSearch((prevEnable) => !prevEnable)
+  function handleFocus() {
+    setIsInputFocused(true)
+  }
+
+  function handleBlur() {
+    setIsInputFocused(false)
   }
 
   return (
-    <div className="flex">
+    <label
+      className={`flex items-center w-full gap-2 rounded-2xl border-2 p-4 duration-100 ${isInputFocused ? 'border-rosa-300' : 'border-cinza-100'} group-hover:border-rosa-300`}
+    >
+      <SearchIcon />
       <input
-        className={`${styleInput} duration-100`}
+        className="w-full outline-none" // Adicione outline-none para remover a borda padrão do input
         value={valueForSearchProdut}
         onChange={onChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        placeholder='Pesquisar'
       />
-      <button onClick={handleSearch}>
-        {isEnableInputSearch ? <p>X</p> : <SearchIcon />}
-      </button>
-    </div>
+    </label>
   )
 }
