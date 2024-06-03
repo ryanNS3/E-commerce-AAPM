@@ -29,6 +29,7 @@ export function Product({ productData }) {
         setIsTopPageProduct(false)
       }
     }
+    handleScroll()
 
     window.addEventListener('scroll', handleScroll)
 
@@ -58,18 +59,16 @@ export function Product({ productData }) {
       <div className={`${isTopPageProduct ? '  lg:h-[50%]' : 'hidden'}`} />
       <section
         ref={refImage}
-        className={` ${isTopPageProduct ? ' sm:w-2/6 lg:fixed lg:left-36 lg:top-4 lg:block' : ''}`}
+        className={` ${isTopPageProduct ? ' lg:w-2/6 lg:fixed lg:left-36 lg:top-4 lg:block' : ''}`}
       >
         <div className=" flex items-center">
           <p className=" text-fun2">R$900</p>
           <p>ou em até 12x</p>
         </div>
         <h1 className=" text-h3">Camiseta</h1>
-        <article
-          className={`${isTopPageProduct ? ' w-full' : ''}`}
-        >
+        <article className={`${isTopPageProduct ? ' lg:w-full' : ''}`}>
           <div
-            className={` ${isTopPageProduct ? '  flex w-full' : ''} flex justify-center rounded-lg border border-cinza-100 py-2  lg:py-10`}
+            className={` ${isTopPageProduct ? '  lg:flex lg:w-full' : ''} flex justify-center rounded-lg border border-cinza-100 py-2  lg:py-10`}
           >
             <img
               className=" w-2/5 place-self-center"
@@ -178,7 +177,11 @@ export function Product({ productData }) {
           </div>
         </section>
 
-        <PrimaryButton action={() => Navigate("/carrinho")} size="medium" text="Adicionar ao carrinho" />
+        <PrimaryButton
+          action={() => Navigate('/carrinho')}
+          size="medium"
+          text="Adicionar ao carrinho"
+        />
       </form>
     </main>
   )

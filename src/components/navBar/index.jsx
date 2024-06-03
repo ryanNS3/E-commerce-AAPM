@@ -18,7 +18,7 @@ export function NavBar() {
 
         <div>
           <li>
-            <Link>
+            <Link to={'/'}>
               <LogoEnuxus />
             </Link>
           </li>
@@ -26,12 +26,12 @@ export function NavBar() {
 
         <div className="flex items-center gap-8">
           <li>
-            <Link>
+            <Link to={'/carrinho'}>
               <CartIcon />
             </Link>
           </li>
           <li>
-            <Link>
+            <Link to={'/'}>
               <div className=" h-11 w-11 rounded-full bg-cinza-100"></div>
             </Link>
           </li>
