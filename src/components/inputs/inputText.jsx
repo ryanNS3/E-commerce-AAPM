@@ -1,3 +1,5 @@
+import { LabelError } from '../label/labelError'
+
 export function InputText({
   id,
   name,
@@ -18,9 +20,7 @@ export function InputText({
         disabled={disabled}
         {...props}
       />
-      {error && (
-        <p className="text-ct3 capitalize text-vermelho-300">{error}</p>
-      )}
+      {error && <LabelError error={error} />}
     </div>
   )
 }
