@@ -41,11 +41,13 @@ export function RootModal({
         sx={modalStyle}
       >
         <Box sx={InnerModal}>
-          <div className=" flex max-h-[99%] w-full flex-col overflow-y-scroll rounded-3xl border-2 border-cinza-100 bg-branco px-11 py-11 md:h-2/4 md:overflow-hidden md:m-auto lg:w-3/4">
+          <div className=" animate-ButtonToTop duration-800 flex max-h-[99%] w-full flex-col  overflow-hidden rounded-3xl border-2 border-cinza-100 bg-branco px-5 py-5 md:px-7 md:py-7 lg:px-11 lg:py-11 md:m-auto lg:w-3/4">
             <button className=" self-end" onClick={handleClose}>
               Fechar modal
             </button>
-            <div>{children}</div>
+            <div className=" overflow-x-hidden md:max-h-[99%] md:overflow-y-scroll lg:overflow-y-hidden">
+              {children}
+            </div>
           </div>
         </Box>
       </Modal>
