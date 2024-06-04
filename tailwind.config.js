@@ -17,11 +17,12 @@ export default {
       animation: {
         modalAnimation: 'rightToLeft 0.3s ease-in-out forwards',
         topToButton: 'topToButton 0.3s ease-in-out forwards',
+        ButtonToTop: 'buttonToTop 0.3s ease-in-out forwards',
       },
 
-      transitionDuration:{
-        "600" : '600ms',
-        "800": '800ms'
+      transitionDuration: {
+        600: '600ms',
+        800: '800ms',
       },
 
       keyframes: {
@@ -34,6 +35,15 @@ export default {
         topToButton: {
           '0%': {
             transform: 'translateY(10px)',
+            opacity: 0,
+          },
+          '100%': {
+            transform: 'translateY(0px)',
+          },
+        },
+        buttonToTop: {
+          '0%': {
+            transform: 'translateY(1000px)',
             opacity: 0,
           },
           '100%': {
@@ -85,7 +95,7 @@ export default {
       h1: [
         '5rem',
         {
-          lineHeight: '84px',
+          lineHeight: '5.25rem',
           letterSpacing: '0',
           fontWeight: '800',
         },
@@ -93,7 +103,7 @@ export default {
       h2: [
         '4.5rem',
         {
-          lineHeight: '94px',
+          lineHeight: '5.8rem',
           letterSpacing: '0',
           fontWeight: '600',
         },
@@ -101,7 +111,7 @@ export default {
       h3: [
         '3.5rem',
         {
-          lineHeight: '67px',
+          lineHeight: '4.1rem',
           letterSpacing: '1%',
           fontWeight: '600',
         },
@@ -109,7 +119,7 @@ export default {
       h4: [
         '2.5rem',
         {
-          lineHeight: '48px',
+          lineHeight: '3rem',
           letterSpacing: '-1%',
           fontWeight: '600',
           case: 'upper',
@@ -118,7 +128,7 @@ export default {
       h5: [
         '2rem',
         {
-          lineHeight: '38px',
+          lineHeight: '2.3rem',
           letterSpacing: '2%',
           fontWeight: '600',
         },
@@ -126,7 +136,7 @@ export default {
       sub1: [
         '1.5rem',
         {
-          lineHeight: '31px',
+          lineHeight: '1.9rem',
           letterSpacing: '2%',
           fontWeight: '600',
           case: 'upper',
@@ -135,7 +145,7 @@ export default {
       sub2: [
         '1.25rem',
         {
-          lineHeight: '28px',
+          lineHeight: '1.7rem',
           letterSpacing: '2%',
           fontWeight: '500',
         },
@@ -143,7 +153,7 @@ export default {
       fun1: [
         '1.25rem',
         {
-          lineHeight: '28px',
+          lineHeight: '1.7rem',
           letterSpacing: '2%',
           fontWeight: '700',
           case: 'upper',
@@ -152,7 +162,7 @@ export default {
       fun2: [
         '0.938rem',
         {
-          lineHeight: '21px',
+          lineHeight: '1.3rem',
           letterSpacing: '2%',
           fontWeight: '600',
           case: 'upper',
@@ -161,7 +171,7 @@ export default {
       ct1: [
         '1.375rem',
         {
-          lineHeight: '29px',
+          lineHeight: '1.8rem',
           letterSpacing: '1%',
           fontWeight: '400',
         },
@@ -169,7 +179,7 @@ export default {
       ct2: [
         '0.938rem',
         {
-          lineHeight: '21px',
+          lineHeight: '1.3rem',
           letterSpacing: '1%',
           fontWeight: '400',
         },
@@ -177,7 +187,7 @@ export default {
       ct3: [
         '0.75rem',
         {
-          lineHeight: '17px',
+          lineHeight: '1rem',
           letterSpacing: '1%',
           fontWeight: '400',
         },
