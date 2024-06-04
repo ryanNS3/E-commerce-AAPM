@@ -31,7 +31,7 @@ export function NavBar() {
             </Link>
           </li>
           <li>
-            <Link to={'/'}>
+            <Link to={'/login'}>
               <div className=" h-11 w-11 rounded-full bg-cinza-100"></div>
             </Link>
           </li>

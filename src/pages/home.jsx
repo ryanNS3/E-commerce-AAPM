@@ -13,7 +13,7 @@ export function Home() {
 
   return (
     <div className=" space-y-20">
-      <header className=" grid lg:h-screen lg:grid-cols-2">
+      <header className=" grid  lg:grid-cols-2">
         <section className="flex flex-col gap-4">
           <h1 className="max-w-[550px] text-h3">
             Contríbua para a melhora do escola.
@@ -36,7 +36,7 @@ export function Home() {
         </section>
       </header>
 
-      <main className=" space-y-8 lg:h-screen" aria-labelledby="produto">
+      <main className=" space-y-8 " aria-labelledby="produto">
         <header className="flex flex-col">
           <h1 className="mb-8 text-h4 uppercase" id="produto">
             Nossos Produtos

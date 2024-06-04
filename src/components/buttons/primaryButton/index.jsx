@@ -2,56 +2,20 @@ import React from 'react'
 
 export function PrimaryButton({
   text,
-  size,
   action,
-  align,
   loading,
   disabled,
   type,
   icon,
-  typeButton,
   ...props
 }) {
   // Definir o tamanho do botão
 
-  // Definir o posicionamento do botão
-  let alignment = ''
-  switch (align) {
-    case 'start':
-      alignment = 'start'
-      break
-    case 'end':
-      alignment = 'end'
-      break
-    case 'center':
-      alignment = 'center'
-      break
-    case 'stretch':
-      alignment = 'stretch'
-      break
-    case 'baseline':
-      alignment = 'baseline'
-      break
-    default:
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      alignment = 'auto'
-  }
-
-  let buttonColour = ''
-  switch (type) {
-    case 'secondary':
-      buttonColour = 'bg-gradient-to-r from-[#494747] to-[#1A1A1A]'
-      break
-
-    default:
-      buttonColour = 'bg-gradient-to-r from-[#BD3FD1] to-[#9332AE]'
-  }
-
+  const buttonColour = 'bg-gradient-to-r from-[#BD3FD1] to-[#9332AE]'
   return (
     <button
-      type={typeButton || 'submit'}
       onClick={action}
-      className={`flex items-center justify-center ${disabled || loading ? (type === 'secondary' ? 'bg-cinza-100 text-cinza-950' : 'bg-rosa-50 text-rosa-400') : buttonColour} focus:shadow-outline transform rounded-[4px] px-7 py-3 text-fun2 text-cinza-50 transition duration-300 hover:scale-105 focus:outline-none active:scale-100`}
+      className={`flex items-center justify-center ${disabled || loading ? (type === 'secondary' ? 'bg-cinza-100 text-cinza-950' : 'bg-rosa-50 text-rosa-200') : buttonColour} focus:shadow-outline transform rounded-[4px] px-7 py-3 text-fun2 text-cinza-50 transition duration-300 hover:scale-105 focus:outline-none active:scale-100 active:border-[#2bec55]`}
       disabled={loading || disabled}
       {...props}
     >
