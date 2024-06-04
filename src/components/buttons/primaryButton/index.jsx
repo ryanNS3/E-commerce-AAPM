@@ -15,7 +15,7 @@ export function PrimaryButton({
   return (
     <button
       onClick={action}
-      className={`flex items-center justify-center ${disabled || loading ? (type === 'secondary' ? 'bg-cinza-100 text-cinza-950' : 'bg-rosa-50 text-rosa-400') : buttonColour} focus:shadow-outline transform rounded-[4px] px-7 py-3 text-fun2 text-cinza-50 transition duration-300 hover:scale-105 focus:outline-none active:scale-100 active:border-[#2bec55]`}
+      className={`flex items-center justify-center ${disabled || loading ? (type === 'secondary' ? 'bg-cinza-100 text-cinza-950' : 'bg-rosa-50 text-rosa-200') : buttonColour} focus:shadow-outline transform rounded-[4px] px-7 py-3 text-fun2 text-cinza-50 transition duration-300 hover:scale-105 focus:outline-none active:scale-100 active:border-[#2bec55]`}
       disabled={loading || disabled}
       {...props}
     >
