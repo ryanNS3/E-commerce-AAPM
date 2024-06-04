@@ -2,8 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { LogoEnuxus } from '../../assets/logoEnexus'
 import { CartIcon } from '../../assets/cart'
-import { RootModal } from '../modal'
-import { LoginForm } from '../form/login'
 
 export function NavBar() {
   return (
@@ -33,14 +31,8 @@ export function NavBar() {
             </Link>
           </li>
           <li>
-            <Link to={'/'}>
-              <RootModal
-                componentForOpenModal={
-                  <div className=" h-11 w-11 rounded-full bg-cinza-100"></div>
-                }
-              >
-                <LoginForm />
-              </RootModal>
+            <Link to={'/login'}>
+              <div className=" h-11 w-11 rounded-full bg-cinza-100"></div>
             </Link>
           </li>
         </div>
