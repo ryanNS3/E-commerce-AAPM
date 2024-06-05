@@ -10,7 +10,7 @@ export function MobileMenu() {
   return (
     <>
       <div className=' w-full flex  items-center'>
-        <button className=" after:block after:h-1 after:w-6 after:rounded after:bg-preto"></button>
+        <button className=" after:block after:h-1 after:w-6 after:rounded after:bg-preto "></button>
         <div className=' mx-auto'>
           <Link to={'/'}>
             <LogoEnuxus />
