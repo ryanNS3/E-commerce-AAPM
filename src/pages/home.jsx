@@ -7,9 +7,12 @@ import { PrimaryButton } from '../components/buttons/primaryButton'
 import { Search } from '../components/search'
 import { CardProduct } from '../components/cards/cardProduct'
 import { Link, useNavigate } from 'react-router-dom'
+import { productContext } from '../Contexts/productContext'
 
 export function Home() {
   const navigate = useNavigate()
+  const { allProductsQuery} = React.useContext(productContext)
+  
 
   return (
     <div className=" space-y-20">
