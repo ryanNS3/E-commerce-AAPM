@@ -6,6 +6,7 @@ import { ProductProvider } from '../Contexts/productContext'
 import { Cart } from '../pages/cart'
 import { ScrollToTop } from '../layout/scrollToTop'
 import { Login } from '../pages/login'
+import { Scheduling } from '../pages/scheduling'
 
 export function Router() {
   return (
@@ -19,7 +20,7 @@ export function Router() {
             <Route path="/produto" element={<Product />} />
             <Route path="/carrinho" element={<Cart />} />
             <Route path="/assinatura" element={<div>Assinatura</div>} />
-            <Route path="/agendamento" element={<div>Agendamento</div>} />
+            <Route path="/agendamento" element={<Scheduling />} />
           </Route>
         </Routes>
       </ProductProvider>
