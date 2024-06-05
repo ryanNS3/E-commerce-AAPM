@@ -11,8 +11,15 @@ import { productContext } from '../Contexts/productContext'
 
 export function Home() {
   const navigate = useNavigate()
-  const { allProductsQuery} = React.useContext(productContext)
-  
+  const { allProductsQuery, selectedProduct, setSelectedProduct} = React.useContext(productContext)
+
+
+  function handleClickVisualizationProduct(event, productSelected ){
+    navigate('/produto')
+    setSelectedProduct(productSelected)
+  }
+
+  console.log(allProductsQuery)
 
   return (
     <div className=" space-y-20">
@@ -46,13 +53,18 @@ export function Home() {
           </h1>
           <Search />
         </header>
-        <section className="flex flex-wrap gap-6" id="produtos">
-          <CardProduct
-            name="Camiseta"
-            onCLick={() => navigate('/produto')}
-            price={'R$900'}
-          />
-          <CardProduct name="Camiseta" price={'R$900'} />
+        <section className="flex max-w-full  overflow-x-scroll gap-6" id="produtos">
+          {allProductsQuery.data &&
+            allProductsQuery?.data?.json?.response?.map((products) => (
+              <CardProduct
+                name={products.nome}
+                price={products.valor}
+                onCLick={(e) => handleClickVisualizationProduct(products) }
+              />
+
+            ))
+          
+          }
           <CardProduct name="Camiseta" price={'R$900'} />
         </section>
       </main>
