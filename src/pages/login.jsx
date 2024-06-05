@@ -1,55 +1,55 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { IlustrationNotebook } from '../assets/ilustration/ilustrationNotebook'
 import { PrimaryButton } from '../components/buttons/primaryButton/index'
 import { InputText } from '../components/inputs/inputText'
 import { Label } from '../components/label/index'
 import { emailSchema, loginSchema, passwordSchema } from '../utils/zodValidate'
+import { UserGlobal } from '../Contexts/userContext'
 
 export function Login() {
+
   const [emailUser, setEmailUser] = React.useState('')
+  const { mutateUserLogin } = React.useContext(UserGlobal)
   const [passwordUser, setPasswordUser] = React.useState('')
-  const [isActiveButton, setIsActiveButton] = React.useState(true)
+  const [isActiveButton, setIsActiveButton] = React.useState(false)
   const [errorValidate, setErrorValidate] = React.useState({
     email: null,
     password: null,
   })
 
-  React.useEffect(() => {
-    if (
-      errorValidate.email ||
-      errorValidate.password ||
-      emailUser == '' ||
-      passwordUser == ''
-    ) {
-      setIsActiveButton(true)
-    } else {
-      setIsActiveButton(false)
-    }
-  }, [errorValidate, emailUser, passwordUser])
-
   function handleSubmitLoginModal(event) {
     event.preventDefault()
+    const dataUserLogin = {
+      email: emailUser,
+      senha: passwordUser,
+    }
     try {
-      loginSchema.parse({
-        email: emailUser,
-        password: passwordUser,
-      })
+      // validação
+      setIsActiveButton(true)
+      // loginSchema.parse({
+      //   email: emailUser,
+      //   password: passwordUser,
+      // })
+      // função de requisição
+      mutateUserLogin.mutate(dataUserLogin)
+
     } catch (error) {
       error.errors.forEach((err) => {
-        if (error.path === 'email') {
+        if (err.path?.join() === 'email') {
           setErrorValidate((prevState) => ({
             ...prevState,
             email: err.message,
           }))
-        } else {
+        } else if (err.path?.join() === 'password') {
           setErrorValidate((prevState) => ({
             ...prevState,
             password: err.message,
           }))
         }
       })
-      console.log(error.errors)
+    } finally {
+      setIsActiveButton(false)
     }
   }
 
@@ -77,9 +77,20 @@ export function Login() {
         ? error.errors[1].message
         : error.errors[0].message
       setErrorValidate((prevState) => ({ ...prevState, password: message }))
-      console.log(message)
     }
   }
+  React.useEffect(() => {
+    if (
+      errorValidate.email ||
+      errorValidate.password ||
+      !emailUser ||
+      !passwordUser
+    ) {
+      setIsActiveButton(true)
+    } else {
+      setIsActiveButton(false)
+    }
+  }, [errorValidate, emailUser, passwordUser])
 
   return (
     <div className=" py-4 md:grid md:grid-cols-2   ">
