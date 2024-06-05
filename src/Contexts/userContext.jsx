@@ -22,7 +22,8 @@ export const UserProvider = ({ children }) => {
 
   async function userLoginRequest(dataUserLogin) {
     setLoading(true)
-    try {
+   
+    
       const response = await requestApi(
         `${BASE_URL}/aluno/login`,
         dataUserLogin,
@@ -30,35 +31,28 @@ export const UserProvider = ({ children }) => {
         null,
       )
       return response
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        setError('Email ou senha inválidos. Tente novamente.')
-      } else if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setError(
-          error.response.data.message ||
-            'Erro durante o login. Por favor, tente novamente.',
-        )
-      }
-    }
   }
 
   const mutateUserLogin = useMutation({
     mutationFn: userLoginRequest,
     mutationKey: ['userLogin'],
     onSuccess: (res) => {
-      setToken(res.data.response.token)
-      localStorage.setItem('token', res.data.response.token)
-      setUser(res.data.response.NIF)
-      localStorage.setItem('user', res.data.response.NIF)
+      setToken(res.json.response.token)
+      localStorage.setItem('token', res.json.response.token)
+      setUser(res.json.response.NIF)
+      localStorage.setItem('user', res.json.response.NIF)
       Notification('success', 'logado com sucesso')
+      navegar("/")
     },
-    onError: () => {
+    onError: (res) => {
+      console.log("error",res)
       Notification('error', 'Verifique o email e senha')
     },
+    onLoading : () =>{
+      Notification("loading", "carregado")
+    }
+
+    
   })
 
   async function userLogoutRequest() {
