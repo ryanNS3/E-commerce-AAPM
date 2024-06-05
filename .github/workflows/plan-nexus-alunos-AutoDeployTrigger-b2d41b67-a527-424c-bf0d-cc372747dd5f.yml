@@ -24,6 +24,14 @@ jobs:
       - name: Checkout to the branch
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Set VITE_API_URL environment variable
+        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
+
       - name: Azure Login
         uses: azure/login@v1
         with:
