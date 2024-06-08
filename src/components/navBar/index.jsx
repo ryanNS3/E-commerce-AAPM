@@ -7,7 +7,6 @@ import { MobileMenu } from './menuMobile'
 
 export function NavBar() {
   const [metchMediaMobile] = useMedia('(max-width:950px)')
-  console.log(metchMediaMobile)
 
   return (
     <>
@@ -15,9 +14,9 @@ export function NavBar() {
         <MobileMenu />
       ) : (
         <nav aria-label="Navegação primária">
-          <ul className="flex w-full justify-between">
+          <ul className="flex w-full justify-between text-cinza-500 ">
             <div className="flex gap-8">
-              <li className="text-fun2 hover:text-rosa-300">
+              <li className="text-fun2 after:w-0 hover:text-cinza-950 hover:after:block hover:after:h-1 hover:after:w-1/4 hover:after:bg-cinza-950 after:duration-200">
                 <Link to={'/'}>Produtos</Link>
               </li>
               <li className=" text-fun2">
