@@ -6,7 +6,8 @@ export const productContext = React.createContext()
 
 export function ProductProvider({ children }) {
   const BASE_URL = import.meta.env.VITE_API_URL
-  const { requestAPI } = useAxios()
+  const { requestApi } = useAxios()
+  const [selectedProduct, setSelectedProduct] = React.useState(null)
 
   const sizes = [
     {
@@ -27,23 +28,23 @@ export function ProductProvider({ children }) {
   ]
 
   async function FetchAllProduct() {
-    const requestApiGetAllProduct = await requestAPI(
+    const requestApiGetAllProduct = await requestApi(
       `${BASE_URL}/produto/todosAtivos`,
       null,
-      'POST',
-      null,
+      'GET',
     )
-    console.log(requestApiGetAllProduct)
+
     return requestApiGetAllProduct
   }
 
   const allProductsQuery = useQuery({
     queryFn: FetchAllProduct,
     queryKey: ['allProducts'],
+    
   })
 
   return (
-    <productContext.Provider value={{ sizes, allProductsQuery }}>
+    <productContext.Provider value={{ sizes, allProductsQuery, selectedProduct, setSelectedProduct }}>
       {children}
     </productContext.Provider>
   )

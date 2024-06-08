@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { UserProvider } from '../Contexts/userContext'
 import { ToastifyProvider } from '../Contexts/toastifyContext'
 import { ToastContainer } from 'react-toastify'
+import { PageNotFound } from '../pages/pageNotFound'
 
 export function Router() {
   const queryClient = new QueryClient()
@@ -30,6 +31,7 @@ export function Router() {
                   <Route path="/carrinho" element={<Cart />} />
                   <Route path="/assinatura" element={<div>Assinatura</div>} />
                   <Route path="/agendamento" element={<Scheduling />} />
+                  <Route path="/*" element={<PageNotFound />} />
                 </Route>
               </Routes>
             </ProductProvider>

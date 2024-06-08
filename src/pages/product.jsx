@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 
 export function Product({ productData }) {
   const [paymentMethod, setPaymentMethod] = useState(null)
+  const {selectedProduct} = React.useContext(productContext)
   const [colorProduct, setColorProduct] = useState(null)
   const [sizeProduct, setSizeProduct] = useState(null)
   const { sizes } = useContext(productContext)

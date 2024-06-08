@@ -13,11 +13,14 @@ export default {
     extend: {
       boxShadow: {
         'card-e-nexus': '0px 4px 24px #E9E9E9',
+        'menu-mobile': '0px 8px #000, 0px -8px #000',
+        'menu-mobile-active': '0px 0px #000, 0px 0px #000',
       },
       animation: {
         modalAnimation: 'rightToLeft 0.3s ease-in-out forwards',
         topToButton: 'topToButton 0.3s ease-in-out forwards',
         ButtonToTop: 'buttonToTop 0.3s ease-in-out forwards',
+        menuMobileActive: 'minWidthToMaxWidth 0.8s ease-in-out forwads',
       },
 
       transitionDuration: {
@@ -30,6 +33,14 @@ export default {
           '100%': {
             transform: 'translateX(10px)',
             opacity: 1,
+          },
+        },
+        minWidthToMaxWidth: {
+          '0%': {
+            width: '0%',
+          },
+          '100%': {
+            width: '100%',
           },
         },
         topToButton: {
@@ -260,6 +271,34 @@ export default {
       }
 
       addUtilities(noScrollBar)
+    },
+
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.menu-mobile-active': {
+          '@apply relative w-6 h-6': {},
+        },
+        '.menu-mobile-active::before, .menu-mobile-active::after': {
+          '@apply absolute w-6 h-1 bg-preto rounded transition-transform duration-200 ease-in-out':
+            {},
+          content: '""',
+        },
+        '.menu-mobile-active::before': {
+          '@apply top-1/2 left-1/2': {},
+          transform: 'translate(-50%, -50%) rotate(-50deg)',
+        },
+        '.menu-mobile-active::after': {
+          '@apply top-1/2 left-1/2': {},
+          transform: 'translate(50%, 50%) rotate(50deg)',
+        },
+        '.menu-mobile-active.active::before': {
+          transform: 'translate(-50%, -50%) rotate(-50deg)',
+        },
+        '.menu-mobile-active.active::after': {
+          transform: 'translate(50%, 50%) rotate(-45deg)',
+        },
+      }
+      addUtilities(newUtilities, ['responsive', 'hover'])
     },
   ],
 }

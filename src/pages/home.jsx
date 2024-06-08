@@ -11,8 +11,13 @@ import { productContext } from '../Contexts/productContext'
 
 export function Home() {
   const navigate = useNavigate()
-  const { allProductsQuery} = React.useContext(productContext)
-  
+  const { allProductsQuery, selectedProduct, setSelectedProduct } =
+    React.useContext(productContext)
+
+  function handleClickVisualizationProduct(event, productSelected) {
+    navigate('/produto')
+    setSelectedProduct(productSelected)
+  }
 
   return (
     <div className=" space-y-20">
@@ -25,7 +30,7 @@ export function Home() {
             Assine ou compre algum produto da AAPM e faça parte do nosso time
           </p>
 
-          <div className=" flex items-center gap-4  ">
+          <div className=" flex flex-wrap items-center gap-4  ">
             <PrimaryButton text="Assine agora" size="small" />
             <p className=" text-fun2">Ou</p>
             <Link to={'#produtos'}>
@@ -34,7 +39,7 @@ export function Home() {
           </div>
         </section>
 
-        <section className=" justify-self-end">
+        <section className=" justify-self-start sm:w-2/3 md:justify-self-end">
           <IlustrationPerson />
         </section>
       </header>
@@ -46,13 +51,18 @@ export function Home() {
           </h1>
           <Search />
         </header>
-        <section className="flex flex-wrap gap-6" id="produtos">
-          <CardProduct
-            name="Camiseta"
-            onCLick={() => navigate('/produto')}
-            price={'R$900'}
-          />
-          <CardProduct name="Camiseta" price={'R$900'} />
+        <section
+          className="flex max-w-full  gap-6 overflow-x-scroll"
+          id="produtos"
+        >
+          {allProductsQuery.data &&
+            allProductsQuery?.data?.json?.response?.map((products) => (
+              <CardProduct
+                name={products.nome}
+                price={products.valor}
+                onCLick={(e) => handleClickVisualizationProduct(products)}
+              />
+            ))}
           <CardProduct name="Camiseta" price={'R$900'} />
         </section>
       </main>
