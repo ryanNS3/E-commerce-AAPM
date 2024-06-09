@@ -8,7 +8,6 @@ import { emailSchema, loginSchema, passwordSchema } from '../utils/zodValidate'
 import { UserGlobal } from '../Contexts/userContext'
 
 export function Login() {
-
   const [emailUser, setEmailUser] = React.useState('')
   const { mutateUserLogin } = React.useContext(UserGlobal)
   const [passwordUser, setPasswordUser] = React.useState('')
@@ -33,7 +32,6 @@ export function Login() {
       // })
       // função de requisição
       mutateUserLogin.mutate(dataUserLogin)
-
     } catch (error) {
       error.errors.forEach((err) => {
         if (err.path?.join() === 'email') {
