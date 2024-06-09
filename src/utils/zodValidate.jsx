@@ -48,7 +48,7 @@ export const nameSchema = z
 export const emailSchema = z
   .string()
   .nonempty('Email é obrigatório.')
-  .email('o email deve conter @')
+  .email('o email deve ter esse padrão "@gmail.com"')
 
 export const studentEmailSchema = z
   .string()
