@@ -14,7 +14,7 @@ export function Square({
         onClick={callBackClick}
         className={`flex  size-18 items-center justify-center rounded-lg border border-cinza-100 bg-cinza-50 p-2  md:border-2 xl:border-[3px] 
         ${isSelect && 'border-rosa-300'}
-        ${disabled && 'bg-cinza-100'} hover:border-rosa-300`}
+        ${disabled && 'bg-cinza-100'} hover:border-cinza-200`}
       >
         <div className=" pointer-events-none">{children}</div>
       </button>
