@@ -27,7 +27,7 @@ export function Router() {
                 <Route path="/" element={<StandardLayout />}>
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
-                  <Route path="/produto" element={<Product />} />
+                  <Route path="/produto/:id" element={<Product />} />
                   <Route path="/carrinho" element={<Cart />} />
                   <Route path="/assinatura" element={<div>Assinatura</div>} />
                   <Route path="/agendamento" element={<Scheduling />} />
