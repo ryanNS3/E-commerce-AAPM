@@ -11,14 +11,13 @@ import { productContext } from '../Contexts/productContext'
 
 export function Home() {
   const navigate = useNavigate()
-  const { allProductsQuery, selectedProduct, setSelectedProduct } =
-    React.useContext(productContext)
+  const { allProductsQuery, groupProduct } = React.useContext(productContext)
 
   function handleClickVisualizationProduct(event, productSelected) {
-    navigate('/produto')
-    setSelectedProduct(productSelected)
+    navigate(`/produto/${productSelected}`)
   }
-
+  console.log(groupProduct)
+  console.log(allProductsQuery)
   return (
     <div className=" space-y-20">
       <header className=" grid  lg:grid-cols-2">
@@ -55,12 +54,15 @@ export function Home() {
           className="flex max-w-full  gap-6 overflow-x-scroll"
           id="produtos"
         >
-          {allProductsQuery.data &&
-            allProductsQuery?.data?.json?.response?.map((products) => (
+          {groupProduct &&
+            groupProduct.map((products, index) => (
               <CardProduct
-                name={products.nome}
+                name={products.nome + index}
+                key={products.nome}
                 price={products.valor}
-                onCLick={(e) => handleClickVisualizationProduct(products)}
+                onCLick={(e) =>
+                  handleClickVisualizationProduct(e, products.nome)
+                }
               />
             ))}
           <CardProduct name="Camiseta" price={'R$900'} />

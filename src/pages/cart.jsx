@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import camiseta from '../assets/fotoTesteCamiseta.png'
 import { PrimaryButton } from '../components/buttons/primaryButton'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { UserGlobal } from '../Contexts/userContext'
 
 export function Cart() {
   const Navigation = useNavigate()
+  const { userLogin, token } = useContext(UserGlobal)
+  console.log(userLogin, token)
   return (
     <main className=" flex flex-col">
       <header
@@ -18,6 +21,7 @@ export function Cart() {
           <PrimaryButton
             action={() => Navigation('/agendamento')}
             text="Finalizar agendamento"
+            disabled={!userLogin && !token}
           />
         </div>
       </header>
@@ -53,6 +57,17 @@ export function Cart() {
             Remover
           </button>
         </article>
+        {!userLogin &&
+          !token(
+            <section className=" flex h-full w-full flex-col items-center justify-center ">
+              <h2 className=" text-ct2">
+                Ops parece que você ainda não fez o login!Que tal fazer o login
+                para acessar o seu carrinho
+              </h2>
+              {/* <PrimaryButton action={() => Navigation("/login")} text="Fazer login agora"/> */}
+              <Link className=" text-fun2">Ir para o login</Link>
+            </section>,
+          )}
       </section>
     </main>
   )

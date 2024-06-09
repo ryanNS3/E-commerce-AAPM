@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { LogoEnuxus } from '../../assets/logoEnexus'
 import { CartIcon } from '../../assets/cart'
 import { useMedia } from '../../hooks/useMedia'
 import { MobileMenu } from './menuMobile'
+import { UserGlobal } from '../../Contexts/userContext'
 
 export function NavBar() {
   const [metchMediaMobile] = useMedia('(max-width:950px)')
-
+  const { userLogin, token } = useContext(UserGlobal)
   return (
     <>
       {metchMediaMobile ? (
@@ -16,7 +17,7 @@ export function NavBar() {
         <nav aria-label="Navegação primária">
           <ul className="flex w-full justify-between text-cinza-500 ">
             <div className="flex gap-8">
-              <li className="text-fun2 after:w-0 hover:text-cinza-950 hover:after:block hover:after:h-1 hover:after:w-1/4 hover:after:bg-cinza-950 after:duration-200">
+              <li className="text-fun2 after:w-0 after:duration-200 hover:text-cinza-950 hover:after:block hover:after:h-1 hover:after:w-1/4 hover:after:bg-cinza-950">
                 <Link to={'/'}>Produtos</Link>
               </li>
               <li className=" text-fun2">
@@ -38,10 +39,9 @@ export function NavBar() {
                   <CartIcon />
                 </Link>
               </li>
-              <li aria-label='login'>
-                <Link to={'/login'}>
-                  <div className=" h-11 w-11 rounded-full bg-cinza-100"></div>
-                </Link>
+              <li aria-label="login">
+                {!userLogin && !token(<Link to={'/login'}>Fazer logins</Link>)}
+                <div className=" h-11 w-11 rounded-full bg-cinza-100"></div>
               </li>
             </div>
           </ul>
