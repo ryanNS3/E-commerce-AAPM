@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import { LogoEnuxus } from '../../../assets/logoEnexus'
 import { CartIcon } from '../../../assets/cart'
 import { motion, AnimatePresence } from 'framer-motion'
+import { UserGlobal } from '../../../Contexts/userContext'
 
 export function MobileMenu() {
   const [isActiveMobileMenu, setIsActiveMobileMenu] = React.useState(false)
+  const { userLogin, token } = React.useContext(UserGlobal)
 
   const itemVariants = {
     hidden: { opacity: 0, x: -50 },
@@ -21,7 +23,7 @@ export function MobileMenu() {
   return (
     <>
       <nav
-        className={`flex w-full items-center  bg-[#ffffff98] p-2    px-4 ${
+        className={`flex w-full items-center  bg-[#ffffff98]     p-4 ${
           isActiveMobileMenu
             ? 'static'
             : 'fixed left-0 top-0 z-10 backdrop-blur-lg'
@@ -49,10 +51,16 @@ export function MobileMenu() {
               <LogoEnuxus width="33" height="30" />
             </Link>
           </div>
-
-          <Link to={'/login'} className=" text-c3 rounded border-2 border-cinza-200 px-4 py-1  duration-200 hover:bg-cinza-200 hover:text-preto">
-            Entrar
-          </Link>
+          {!userLogin &&
+            !token(
+              <Link
+                to={'/login'}
+                className=" text-c3 rounded border-2 border-cinza-200 px-4 py-1  duration-200 hover:bg-cinza-200 hover:text-preto"
+              >
+                Entrar
+              </Link>,
+            )}
+          {/* <Link>Ver perfil</Link> */}
         </div>
       </nav>
 
@@ -65,7 +73,7 @@ export function MobileMenu() {
             exit={{ opacity: 0 }}
           >
             <div className="fixed h-full w-full flex-col px-5">
-              <ul className=" mt-16 flex h-3/4 flex-col  text-cinza-500 text-fun2 ">
+              <ul className=" mt-16 flex h-3/4 flex-col  text-fun2 text-cinza-500 ">
                 {['Produtos', 'Sobre', 'Carrinho'].map((text, i) => (
                   <motion.li
                     key={text}
@@ -75,9 +83,12 @@ export function MobileMenu() {
                     variants={itemVariants}
                     className="p-2 text-sub2 hover:text-rosa-300"
                     onClick={() => setIsActiveMobileMenu(false)}
+                  >
+                    <Link
+                      className=" flex gap-2"
+                      to={text === 'Carrinho' ? '/carrinho' : '/'}
                     >
-                    <Link className=' flex gap-2' to={text === 'Carrinho' ? '/carrinho' : '/'}>
-                      {text === 'Carrinho' ? "" : null}
+                      {text === 'Carrinho' ? '' : null}
                       {text}
                     </Link>
                   </motion.li>
@@ -93,7 +104,7 @@ export function MobileMenu() {
                     // className=" w-full rounded-md border-2 border-cinza-100"
                     onClick={() => setIsActiveMobileMenu(false)}
                   >
-                    <Link  to={'/login'}>
+                    <Link to={'/login'}>
                       {/* <div className=" h-11 w-11 rounded-full bg-cinza-100"></div> */}
                       Entrar
                     </Link>
