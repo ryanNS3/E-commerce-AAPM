@@ -27,9 +27,6 @@ export function Scheduling() {
     hours: null,
   })
 
-  console.log(productFilterWithoutValue)
-  console.log(filterValue?.[0]?.[1])
-
 
   React.useEffect(() => {
     if (!allProductsGroup) {
