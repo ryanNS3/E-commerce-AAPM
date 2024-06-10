@@ -52,6 +52,40 @@ export function CartProvider({ children }) {
     }
   }
 
+  async function FetchRemoveProductCart(idProduct) {
+    try {
+      const requestPatchProductFromCart = await requestApi(
+        `${BASE_URL}/aluno/carrinhoCompras/remover`,
+        idProduct,
+        'PATCH',
+        {
+          authorization: `bearer ${token}`,
+          id_aluno: user,
+        },
+      )
+      return requestPatchProductFromCart
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function FetchPostSchedulingCart(dataOfScheduling) {
+    try {
+      const requestPostScheduling = await requestApi(
+        `${BASE_URL}/aluno/CarrinhoCompras/`,
+        dataOfScheduling,
+        {
+          authorization: `bearer ${token}`,
+          id_aluno: user,
+        },
+      )
+
+      return requestPostScheduling
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const queryAllProductCart = useQuery({
     queryFn: FetchAllProductsCart,
     queryKey: ['allProductCart'],
@@ -70,12 +104,49 @@ export function CartProvider({ children }) {
     },
   })
 
+  const mutateDeleteProductCart = useMutation({
+    mutationFn: FetchRemoveProductCart,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['allProductCart'])
+      Notification('success', 'Produto removido')
+    },
+    onError: () => {
+      Notification('error', 'Erro ao remover!Tente novamente')
+    },
+  })
+
+  const mutatePostScheduling = useMutation({
+    mutationFn: FetchPostSchedulingCart,
+    onSuccess: () => {
+      // eslint-disable-next-line no-unused-expressions
+      queryClient.invalidateQueries(['allProductCart']),
+        Notification('success', 'Agendamento realizado com sucesso')
+      Navigate('/carrinho')
+    },
+    onError: () => {
+      Notification('error', 'Não foi possível fazer o agendamento')
+    },
+  })
+
+  
   const allProductsGroup =
     queryAllProductCart.data &&
     Object.entries(queryAllProductCart.data.json.response)
-
+  const productFilterWithoutValue = allProductsGroup?.filter(
+    (item) => item[0] != 'valor',
+  )
+  const filterValue = allProductsGroup?.filter((item) => item[0] === 'valor')
   return (
-    <cartContext.Provider value={{ mutateAddProductCart, allProductsGroup }}>
+    <cartContext.Provider
+      value={{
+        mutateAddProductCart,
+        mutatePostScheduling,
+        mutateDeleteProductCart,
+        allProductsGroup,
+        productFilterWithoutValue,
+        filterValue,
+      }}
+    >
       {children}
     </cartContext.Provider>
   )
