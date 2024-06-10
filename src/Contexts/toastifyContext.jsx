@@ -20,6 +20,19 @@ export function ToastifyProvider({ children }) {
         })
         break
 
+      case 'information':
+        toast.info(message, {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: 'light',
+          transition: Slide,
+        })
+        break
+
       case 'loading':
         toast.loading(message, {
           position: 'top-right',
