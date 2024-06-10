@@ -1,17 +1,15 @@
-/* eslint-disable no-sequences */
-import React from 'react'
+import React, { useState, useEffect, useContext, createContext } from 'react'
 import useAxios from '../hooks/useAxios'
 import { UserGlobal } from './userContext'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toastifyContext } from './toastifyContext'
 import { useNavigate } from 'react-router-dom'
 
-export const cartContext = React.createContext()
+export const cartContext = createContext()
 
 export function CartProvider({ children }) {
-  const { user, token, dataPerfilUser, userLogin } =
-    React.useContext(UserGlobal)
-  const { Notification } = React.useContext(toastifyContext)
+  const { user, token } = useContext(UserGlobal)
+  const { Notification } = useContext(toastifyContext)
   const BASE_URL = import.meta.env.VITE_API_URL
   const { requestApi } = useAxios()
   const Navigate = useNavigate()
@@ -28,9 +26,11 @@ export function CartProvider({ children }) {
           id_aluno: user,
         },
       )
+
       return requestPostProduct
     } catch (err) {
-      console.log(err)
+      console.error('Error fetching all products in cart:', err)
+      return null // Retorna um array vazio em caso de erro para evitar o retorno undefined
     }
   }
 
@@ -45,7 +45,6 @@ export function CartProvider({ children }) {
           id_aluno: user,
         },
       )
-      console.log(requestPostProduct)
       return requestPostProduct
     } catch (error) {
       console.log('error', error)
@@ -89,14 +88,20 @@ export function CartProvider({ children }) {
   const queryAllProductCart = useQuery({
     queryFn: FetchAllProductsCart,
     queryKey: ['allProductCart'],
+    onError: (error) => {
+      console.error('Error fetching all products in cart:', error)
+      Notification(
+        'error',
+        'Erro ao buscar produtos do carrinho. Tente novamente mais tarde.',
+      )
+    },
   })
 
   const mutateAddProductCart = useMutation({
     mutationFn: FetchAddProductCart,
     onSuccess: () => {
-      // eslint-disable-next-line no-unused-expressions
-      queryClient.invalidateQueries(['allProductCart']),
-        Notification('success', 'Produto adicionado ao carrinho')
+      queryClient.invalidateQueries(['allProductCart'])
+      Notification('success', 'Produto adicionado ao carrinho')
       Navigate('/carrinho')
     },
     onError: () => {
@@ -111,16 +116,15 @@ export function CartProvider({ children }) {
       Notification('success', 'Produto removido')
     },
     onError: () => {
-      Notification('error', 'Erro ao remover!Tente novamente')
+      Notification('error', 'Erro ao remover! Tente novamente')
     },
   })
 
   const mutatePostScheduling = useMutation({
     mutationFn: FetchPostSchedulingCart,
     onSuccess: () => {
-      // eslint-disable-next-line no-unused-expressions
-      queryClient.invalidateQueries(['allProductCart']),
-        Notification('success', 'Agendamento realizado com sucesso')
+      queryClient.invalidateQueries(['allProductCart'])
+      Notification('success', 'Agendamento realizado com sucesso')
       Navigate('/carrinho')
     },
     onError: () => {
@@ -128,14 +132,31 @@ export function CartProvider({ children }) {
     },
   })
 
-  
-  const allProductsGroup =
-    queryAllProductCart.data &&
-    Object.entries(queryAllProductCart.data.json.response)
-  const productFilterWithoutValue = allProductsGroup?.filter(
-    (item) => item[0] != 'valor',
-  )
-  const filterValue = allProductsGroup?.filter((item) => item[0] === 'valor')
+  function useFilteredProductFromCart() {
+    const [allProductsGroup, setAllProductsGroup] = useState()
+    const [productFilterWithoutValue, setProductFilterWithoutValue] = useState()
+    const [filterValue, setFilterValue] = useState()
+
+    useEffect(() => {
+      if (queryAllProductCart.data) {
+        console.log(queryAllProductCart)
+        const products = Object.entries(
+          queryAllProductCart?.data?.json?.response,
+        )
+        setAllProductsGroup(products)
+        setProductFilterWithoutValue(
+          products.filter((item) => item[0] !== 'valor'),
+        )
+        setFilterValue(products.filter((item) => item[0] === 'valor'))
+      }
+    }, [queryAllProductCart.data])
+
+    return { allProductsGroup, productFilterWithoutValue, filterValue }
+  }
+
+  const { allProductsGroup, productFilterWithoutValue, filterValue } =
+    useFilteredProductFromCart()
+
   return (
     <cartContext.Provider
       value={{
