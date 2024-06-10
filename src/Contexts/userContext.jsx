@@ -5,17 +5,20 @@ import useAxios from '../hooks/useAxios'
 import { useMutation } from '@tanstack/react-query'
 import { toastifyContext } from './toastifyContext'
 import { useCookies } from '../hooks/useCookies'
+import { pagesContext } from './pagesContext'
 
 export const UserGlobal = createContext()
 
 export const UserProvider = ({ children }) => {
   const BASE_URL = import.meta.env.VITE_API_URL
+  const { handleBackClick } = React.useContext(pagesContext)
   const { requestApi } = useAxios()
-  const [user, setUser] = useCookies('user', null)
+  const [userString, setUserString] = useCookies('user', null)
   const [token, setToken] = useCookies('token', null)
+  const [dataPerfilUser, setDataPerfilUser] = useCookies('perfilUser', null)
+  const user = userString === 'null' ? null : userString
   const userLogin = useMemo(() => !!user, [user])
   const { Notification } = React.useContext(toastifyContext)
-
   const navegar = useNavigate()
   const url = useLocation()
 
@@ -28,25 +31,6 @@ export const UserProvider = ({ children }) => {
     )
     return response
   }
-
-  const mutateUserLogin = useMutation({
-    mutationFn: userLoginRequest,
-    mutationKey: ['userLogin'],
-    onSuccess: (res) => {
-      setToken(res.json.response.token)
-      setUser(res.json.response.NIF)
-      Notification('success', 'logado com sucesso')
-      navegar('/')
-    },
-    onError: (res) => {
-      console.log('error', res)
-      Notification('error', 'Verifique o email e senha')
-    },
-    onLoading: () => {
-      Notification('loading', 'carregado')
-    },
-  })
-
   async function userLogoutRequest() {
     try {
       const response = await axios.post(
@@ -61,37 +45,81 @@ export const UserProvider = ({ children }) => {
       )
 
       if (response && response.status === 200) {
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
         navegar('/login')
         return true
       }
     } catch (error) {}
   }
 
+  async function FetchResetPassword(token, senha){
+    try {
+      const res = await requestApi(
+        `${BASE_URL}/smtp/definirSenha/${token}`,
+        { senha },
+        `POST`,
+        null,
+      )
+      if (res && res.res.status === 200) {
+        return true
+      }
+    } catch (error) {
+      return false
+    }
+  }
+
+  const mutateUserLogin = useMutation({
+    mutationFn: userLoginRequest,
+    mutationKey: ['userLogin'],
+    onSuccess: (res) => {
+      setToken(res.json.response.token)
+      setUserString(res.json.response.id_aluno)
+      setDataPerfilUser({
+        name: res.json.response.nome,
+        email: res.json.response.email,
+        photo: res.json.response.foto,
+        phone: res.json.response.telefone_celular,
+        course: res.json.response.curso,
+        associate: res.json.response.associado,
+      })
+      Notification('success', 'logado com sucesso')
+      handleBackClick()
+    },
+    onError: () => {
+      Notification('error', 'Verifique o email e senha')
+    },
+    onLoading: () => {
+      Notification('loading', 'carregado')
+    },
+  })
+
   const userLogoutMutate = useMutation({
     mutationFn: userLogoutRequest,
     onSuccess: () => {
-      setUser(null)
+      setUserString(null)
       setToken(null)
-      Notification('succes', 'usuário deslogado com sucesso')
+      setDataPerfilUser(null)
+      Notification('succes', 'Usuário deslogado com sucesso')
     },
     onError: () => {
       Notification(
         'error',
-        'não foi possível deslogar, tente novamente mais tarde',
+        'Não foi possível deslogar, tente novamente mais tarde',
       )
     },
   })
 
+  const userResetPasswordMutate = useMutation({
+    mutationFn: FetchResetPassword
+  })
   return (
     <UserGlobal.Provider
       value={{
         user,
         token,
+        dataPerfilUser,
         userLogin,
         mutateUserLogin,
-        userLogoutRequest,
+        userLogoutMutate,
       }}
     >
       {children}

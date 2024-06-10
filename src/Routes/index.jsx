@@ -12,6 +12,8 @@ import { UserProvider } from '../Contexts/userContext'
 import { ToastifyProvider } from '../Contexts/toastifyContext'
 import { ToastContainer } from 'react-toastify'
 import { PageNotFound } from '../pages/pageNotFound'
+import { CartProvider } from '../Contexts/cartContext'
+import { PagesProvider } from '../Contexts/pagesContext'
 
 export function Router() {
   const queryClient = new QueryClient()
@@ -19,23 +21,32 @@ export function Router() {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <ToastifyProvider>
-          <UserProvider>
-            <ProductProvider>
-              <ScrollToTop />
-              <ToastContainer />
-              <Routes>
-                <Route path="/" element={<StandardLayout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/produto/:id" element={<Product />} />
-                  <Route path="/carrinho" element={<Cart />} />
-                  <Route path="/assinatura" element={<div>Assinatura</div>} />
-                  <Route path="/agendamento" element={<Scheduling />} />
-                  <Route path="/*" element={<PageNotFound />} />
-                </Route>
-              </Routes>
-            </ProductProvider>
-          </UserProvider>
+          <ToastContainer />
+          <PagesProvider>
+            <UserProvider>
+              <ProductProvider>
+                <CartProvider>
+                  <ScrollToTop />
+                  <Routes>
+                    <Route path="/" element={<StandardLayout />}>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/pefil" element={<Login />} />
+                      <Route path="/restaurarSenha" element={<Login />} />
+                      <Route path="/produto/:id" element={<Product />} />
+                      <Route path="/carrinho" element={<Cart />} />
+                      <Route
+                        path="/assinatura"
+                        element={<div>Assinatura</div>}
+                      />
+                      <Route path="/agendamento" element={<Scheduling />} />
+                      <Route path="/*" element={<PageNotFound />} />
+                    </Route>
+                  </Routes>
+                </CartProvider>
+              </ProductProvider>
+            </UserProvider>
+          </PagesProvider>
         </ToastifyProvider>
       </QueryClientProvider>
     </BrowserRouter>

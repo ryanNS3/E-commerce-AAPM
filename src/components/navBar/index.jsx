@@ -5,19 +5,21 @@ import { CartIcon } from '../../assets/cart'
 import { useMedia } from '../../hooks/useMedia'
 import { MobileMenu } from './menuMobile'
 import { UserGlobal } from '../../Contexts/userContext'
+import { OneLetterPerfil } from '../OneLetterPerfil'
 
 export function NavBar() {
   const [metchMediaMobile] = useMedia('(max-width:950px)')
-  const { userLogin, token } = useContext(UserGlobal)
+  const { user, token, dataPerfilUser, userLogin } = useContext(UserGlobal)
+  console.log(dataPerfilUser)
   return (
     <>
       {metchMediaMobile ? (
         <MobileMenu />
       ) : (
         <nav aria-label="Navegação primária">
-          <ul className="flex w-full justify-between text-cinza-500 ">
+          <ul className="flex w-full items-center justify-between text-cinza-500 ">
             <div className="flex gap-8">
-              <li className="text-fun2 after:w-0 after:duration-200 hover:text-cinza-950 hover:after:block hover:after:h-1 hover:after:w-1/4 hover:after:bg-cinza-950">
+              <li className="text-fun2 after:w-0 after:duration-200 hover:text-cinza-950 ">
                 <Link to={'/'}>Produtos</Link>
               </li>
               <li className=" text-fun2">
@@ -40,8 +42,15 @@ export function NavBar() {
                 </Link>
               </li>
               <li aria-label="login">
-                {!userLogin && !token(<Link to={'/login'}>Fazer logins</Link>)}
-                <div className=" h-11 w-11 rounded-full bg-cinza-100"></div>
+                {!userLogin && !token ? (
+                  <Link to={'/login'}>Fazer logins</Link>
+                ) : dataPerfilUser?.photo ? (
+                  <img src={dataPerfilUser.photo} alt="" />
+                ) : (
+                  <div className=" h-11 w-11 rounded-full bg-cinza-100">
+                    <OneLetterPerfil name={dataPerfilUser?.name} />
+                  </div>
+                )}
               </li>
             </div>
           </ul>

@@ -1,15 +1,15 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import { IlustrationNotebook } from '../assets/ilustration/ilustrationNotebook'
 import { PrimaryButton } from '../components/buttons/primaryButton/index'
 import { InputText } from '../components/inputs/inputText'
 import { Label } from '../components/label/index'
-import { emailSchema, loginSchema, passwordSchema } from '../utils/zodValidate'
+import { emailSchema, passwordSchema } from '../utils/zodValidate'
 import { UserGlobal } from '../Contexts/userContext'
 
 export function Login() {
-  const [emailUser, setEmailUser] = React.useState('')
   const { mutateUserLogin } = React.useContext(UserGlobal)
+  const [emailUser, setEmailUser] = React.useState('')
   const [passwordUser, setPasswordUser] = React.useState('')
   const [isActiveButton, setIsActiveButton] = React.useState(false)
   const [errorValidate, setErrorValidate] = React.useState({

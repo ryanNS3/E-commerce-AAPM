@@ -6,52 +6,49 @@ import { IlustrationPerson } from '../assets/ilustrationHeader'
 import { PrimaryButton } from '../components/buttons/primaryButton'
 import { Search } from '../components/search'
 import { CardProduct } from '../components/cards/cardProduct'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { productContext } from '../Contexts/productContext'
 
 export function Home() {
   const navigate = useNavigate()
-  const { allProductsQuery, groupProduct } = React.useContext(productContext)
+  const { groupProduct } = React.useContext(productContext)
 
   function handleClickVisualizationProduct(event, productSelected) {
     navigate(`/produto/${productSelected}`)
   }
-  console.log(groupProduct)
-  console.log(allProductsQuery)
+
   return (
     <div className=" space-y-20">
-      <header className=" grid  lg:grid-cols-2">
-        <section className="flex flex-col gap-4">
-          <h1 className="max-w-[550px] text-h3">
+      <header className=" grid items-center justify-center pt-7 md:items-start md:justify-normal md:pt-0  lg:grid-cols-2">
+        <section className="flex  flex-col items-center justify-center gap-4 md:items-start md:justify-start">
+          <h1 className="max-w-[550px] text-center text-h5 md:text-start md:text-h3 xl:max-w-[750px] xl:text-h2">
             Contríbua para a melhora do escola.
           </h1>
-          <p className=" text-ct2">
+          <p className=" text-center text-ct2 md:text-start">
             Assine ou compre algum produto da AAPM e faça parte do nosso time
           </p>
 
-          <div className=" flex flex-wrap items-center gap-4  ">
+          <div className=" flex items-center gap-4  ">
             <PrimaryButton text="Assine agora" size="small" />
             <p className=" text-fun2">Ou</p>
-            <Link to={'#produtos'}>
+            <a href={'#produtos'}>
               <PrimaryButton text="Compre agora" size="small" />
-            </Link>
+            </a>
           </div>
         </section>
 
-        <section className=" justify-self-start sm:w-2/3 md:justify-self-end">
+        <section className=" justify-self-center  sm:w-2/3 md:justify-self-end">
           <IlustrationPerson />
         </section>
       </header>
 
-      <main className=" space-y-8 " aria-labelledby="produto">
+      <main className=" space-y-8 " id="produto" aria-labelledby="produto">
         <header className="flex flex-col">
-          <h1 className="mb-8 text-h4 uppercase" id="produto">
-            Nossos Produtos
-          </h1>
+          <h1 className="mb-8 text-h4 uppercase">Nossos Produtos</h1>
           <Search />
         </header>
         <section
-          className="flex max-w-full  gap-6 overflow-x-scroll"
+          className="flex max-w-full gap-6  overflow-x-scroll py-2"
           id="produtos"
         >
           {groupProduct &&
@@ -65,7 +62,6 @@ export function Home() {
                 }
               />
             ))}
-          <CardProduct name="Camiseta" price={'R$900'} />
         </section>
       </main>
 

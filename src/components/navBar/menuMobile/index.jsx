@@ -4,10 +4,31 @@ import { LogoEnuxus } from '../../../assets/logoEnexus'
 import { CartIcon } from '../../../assets/cart'
 import { motion, AnimatePresence } from 'framer-motion'
 import { UserGlobal } from '../../../Contexts/userContext'
+import { OneLetterPerfil } from '../../OneLetterPerfil'
 
 export function MobileMenu() {
   const [isActiveMobileMenu, setIsActiveMobileMenu] = React.useState(false)
-  const { userLogin, token } = React.useContext(UserGlobal)
+  const { userLogin, token, dataPerfilUser, userLogoutMutate } = React.useContext(UserGlobal)
+
+  function handleSelectPage(page) {
+    switch (page) {
+      case 'Produtos':
+        return '/#produto'
+      case 'Sobre':
+        return '/#sobre'
+      case 'Carrinho':
+        return '/carrinho'
+      case 'Entrar':
+        return '/login'
+      case 'Torna-se associado':
+        return '/assinatura'
+    }
+  }
+
+  function handleLogoutUser(event) {
+    event.preventDefault()
+    userLogoutMutate.mutate()
+  }
 
   const itemVariants = {
     hidden: { opacity: 0, x: -50 },
@@ -32,7 +53,7 @@ export function MobileMenu() {
       >
         <div className={'flex  w-full items-center justify-between'}>
           <div
-            className={` z-[99999]  flex ${isActiveMobileMenu ? 'fixed top-4 sm:left-4' : ''}`}
+            className={` z-[99999]  flex ${isActiveMobileMenu ? 'fixed top-5 sm:left-4' : ''}`}
           >
             <button
               onClick={() => setIsActiveMobileMenu(!isActiveMobileMenu)}
@@ -51,15 +72,16 @@ export function MobileMenu() {
               <LogoEnuxus width="33" height="30" />
             </Link>
           </div>
-          {!userLogin &&
-            !token(
-              <Link
-                to={'/login'}
-                className=" text-c3 rounded border-2 border-cinza-200 px-4 py-1  duration-200 hover:bg-cinza-200 hover:text-preto"
-              >
-                Entrar
-              </Link>,
-            )}
+          {!userLogin || !token ? (
+            <Link
+              to={'/login'}
+              className=" text-c3 rounded border-2 border-cinza-200 px-4 py-1  duration-200 hover:bg-cinza-200 hover:text-preto"
+            >
+              Entrar
+            </Link>
+          ) : (
+            <OneLetterPerfil name={dataPerfilUser.name} />
+          )}
           {/* <Link>Ver perfil</Link> */}
         </div>
       </nav>
@@ -74,29 +96,28 @@ export function MobileMenu() {
           >
             <div className="fixed h-full w-full flex-col px-5">
               <ul className=" mt-16 flex h-3/4 flex-col  text-fun2 text-cinza-500 ">
-                {['Produtos', 'Sobre', 'Carrinho'].map((text, i) => (
-                  <motion.li
-                    key={text}
-                    custom={i}
-                    initial="hidden"
-                    animate="visible"
-                    variants={itemVariants}
-                    className="p-2 text-sub2 hover:text-rosa-300"
-                    onClick={() => setIsActiveMobileMenu(false)}
-                  >
-                    <Link
-                      className=" flex gap-2"
-                      to={text === 'Carrinho' ? '/carrinho' : '/'}
+                {['Produtos', 'Sobre', 'Carrinho', 'Torna-se associado'].map(
+                  (text, i) => (
+                    <motion.li
+                      key={text}
+                      custom={i}
+                      initial="hidden"
+                      animate="visible"
+                      variants={itemVariants}
+                      className="p-2 text-sub2 hover:text-rosa-300"
+                      onClick={() => setIsActiveMobileMenu(false)}
                     >
-                      {text === 'Carrinho' ? '' : null}
-                      {text}
-                    </Link>
-                  </motion.li>
-                ))}
+                      <Link className=" flex gap-2" to={handleSelectPage(text)}>
+                        {text === 'Carrinho' ? '' : null}
+                        {text}
+                      </Link>
+                    </motion.li>
+                  ),
+                )}
 
                 <div className="flex items-center gap-8">
                   <motion.li
-                    custom={3}
+                    custom={4}
                     initial="hidden"
                     animate="visible"
                     variants={itemVariants}
@@ -104,10 +125,14 @@ export function MobileMenu() {
                     // className=" w-full rounded-md border-2 border-cinza-100"
                     onClick={() => setIsActiveMobileMenu(false)}
                   >
-                    <Link to={'/login'}>
-                      {/* <div className=" h-11 w-11 rounded-full bg-cinza-100"></div> */}
-                      Entrar
-                    </Link>
+                    {!userLogin && !token ? (
+                      <Link to={'/login'}>
+                        {/* <div className=" h-11 w-11 rounded-full bg-cinza-100"></div> */}
+                        Entrar
+                      </Link>
+                    ) : (
+                      <button onClick={handleLogoutUser}>Sair</button>
+                    )}
                   </motion.li>
                 </div>
               </ul>

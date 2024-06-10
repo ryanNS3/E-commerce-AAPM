@@ -1,35 +1,47 @@
-import React, { useEffect, useState, useRef, useContext } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 import { Square } from '../components/square'
-import camiseta from '../assets/fotoTesteCamiseta.png'
 import { PixLogo } from '../assets/icons/pix'
-import { CardIcon, CreditCardIcon, DebitCardIcon } from '../assets/icons/card'
+import { CardIcon } from '../assets/icons/card'
 import { MoneyIcon } from '../assets/icons/money'
 import { PrimaryButton } from '../components/buttons/primaryButton'
 import { productContext } from '../Contexts/productContext'
 import { useNavigate, useParams } from 'react-router-dom'
+import { cartContext } from '../Contexts/cartContext'
+import { UserGlobal } from '../Contexts/userContext'
+import { toastifyContext } from '../Contexts/toastifyContext'
+import { pagesContext } from '../Contexts/pagesContext'
 
 export function Product() {
-  const { useFilteredProducts, sizes } = React.useContext(productContext)
+  // const {handleBackClick} = React.useContext(pagesContext)
+  const { user, token } = React.useContext(UserGlobal)
+  const { mutateAddProductCart, FetchAddProductCart } = React.useContext(cartContext)
+  const { useFilteredProducts } = React.useContext(productContext)
+  const { Notification } = React.useContext(toastifyContext)
 
   const productParams = useParams()
-  const [paymentMethod, setPaymentMethod] = useState(null)
   const endCodeProductId = encodeURIComponent(productParams.id)
   const uniqueProduct = useFilteredProducts(endCodeProductId)
-  const [colorProduct, setColorProduct] = useState()
+
+  const [paymentMethod, setPaymentMethod] = React.useState(null)
+  const [colorProduct, setColorProduct] = React.useState()
+  // representa o indice da cor
   const [colorIdProduct, setColorIdProduct] = useState(0)
   const allColorsProduct = uniqueProduct?.[0]?.produtos?.map(
     (product) => product.cor,
   )
-  const [sizeProduct, setSizeProduct] = useState(null)
+  const [sizeProduct, setSizeProduct] = React.useState()
 
-  const refImage = useRef()
-  const [isTopPageProduct, setIsTopPageProduct] = useState(false)
+  const [errorValidation, setErrorValidation] = React.useState({
+    color: null,
+    size: null,
+  })
+
+  const refImage = React.useRef()
+  const [isTopPageProduct, setIsTopPageProduct] = React.useState(false)
   const Navigate = useNavigate()
 
-  console.log(uniqueProduct)
-
-  useEffect(() => {
+  React.useEffect(() => {
     function handleScroll() {
       const scrollPosition = window.scrollY
       const refOffsetTop = refImage?.current?.offsetTop
@@ -58,8 +70,9 @@ export function Product() {
     const color = event.target.dataset.value
     setColorProduct(color)
     setColorIdProduct(
+      // eslint-disable-next-line array-callback-return
       uniqueProduct[0].produtos.map((product) => {
-        if (color == product.cor) {
+        if (color === product.cor) {
           return allColorsProduct.indexOf(product.cor)
         }
       }),
@@ -70,6 +83,29 @@ export function Product() {
     event.preventDefault()
     const size = event.target.dataset.value
     setSizeProduct(size)
+  }
+
+  async function handleSubmitAddCartProduct(event) {
+    event.preventDefault()
+    if (user && token) {
+      if (sizeProduct && colorIdProduct) {
+        const dataProduct = {
+          idProduto: sizeProduct,
+          quantidade: 1
+
+        }
+        mutateAddProductCart.mutate(dataProduct)
+      } else {
+        if (!sizeProduct) {
+          setErrorValidation((prevState) => [
+            { ...prevState, size: 'Selecione um tamanho' },
+          ])
+        }
+      }
+    } else {
+      Notification('information', 'Faça o login primeiro')
+      Navigate('/login')
+    }
   }
 
   return (
@@ -128,20 +164,20 @@ export function Product() {
                 <span className=" text-cinza-500">tamanhos?</span>
               </h2>
               <div className=" flex flex-wrap gap-4">
-                {sizes.map((size, index) => {
-                  
-                  // if (uniqueProduct[0].produtos)
-                  return (
-                    <Square
-                      callBackClick={handleSelectedSizeProduct}
-                      isSelect={sizeProduct === size.size}
-                      key={size.size + index}
-                      value={size.size}
-                    >
-                      <p>{size.size}</p>
-                    </Square>
-                  )
-                })}
+                {uniqueProduct[0].produtos[colorIdProduct].tamanhos.map(
+                  (size, index) => {
+                    return (
+                      <Square
+                        callBackClick={handleSelectedSizeProduct}
+                        isSelect={parseInt(sizeProduct) === size.id_produto}
+                        key={size.tamanho + index}
+                        value={size.id_produto}
+                      >
+                        <p>{size.tamanho}</p>
+                      </Square>
+                    )
+                  },
+                )}
               </div>
             </section>
 
@@ -198,9 +234,10 @@ export function Product() {
             </section>
 
             <PrimaryButton
-              action={() => Navigate('/carrinho')}
+              action={handleSubmitAddCartProduct}
               size="medium"
               text="Adicionar ao carrinho"
+              disabled={!sizeProduct}
             />
           </form>
         </>
