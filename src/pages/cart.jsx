@@ -7,13 +7,13 @@ import { cartContext } from '../Contexts/cartContext'
 
 export function Cart() {
   const Navigation = useNavigate()
-  const { allProductsGroup, mutateDeleteProductCart } = React.useContext(cartContext)
+  const {
+    allProductsGroup,
+    mutateDeleteProductCart,
+    productFilterWithoutValue,
+  } = React.useContext(cartContext)
   const { userLogin, token } = useContext(UserGlobal)
-
-  const productFilterWithoutValue = allProductsGroup?.filter(
-    (item) => item[0] != 'valor',
-  )
-  const filterValue = allProductsGroup?.filter((item) => item[0] === 'valor')
+  console.log(productFilterWithoutValue)
 
   function handleRemoveProductFromCart(event) {
     event.preventDefault()
