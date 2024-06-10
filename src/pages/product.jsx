@@ -15,7 +15,8 @@ import { pagesContext } from '../Contexts/pagesContext'
 export function Product() {
   // const {handleBackClick} = React.useContext(pagesContext)
   const { user, token } = React.useContext(UserGlobal)
-  const { mutateAddProductCart, FetchAddProductCart } = React.useContext(cartContext)
+  const { mutateAddProductCart, FetchAddProductCart } =
+    React.useContext(cartContext)
   const { useFilteredProducts } = React.useContext(productContext)
   const { Notification } = React.useContext(toastifyContext)
 
@@ -91,8 +92,7 @@ export function Product() {
       if (sizeProduct && colorIdProduct) {
         const dataProduct = {
           idProduto: sizeProduct,
-          quantidade: 1
-
+          quantidade: 1,
         }
         mutateAddProductCart.mutate(dataProduct)
       } else {

@@ -1,45 +1,72 @@
 import React, { useState } from 'react'
 import { Stepper } from '../components/stepper/Stepper'
-import { SquareFillMode } from '../components/square'
+import { Square, SquareFillMode } from '../components/square'
 import { InputCalendar } from '../components/inputs/inputCalendar'
 import { Label } from '../components/label'
 import { PrimaryButton } from '../components/buttons/primaryButton'
 import { LabelError } from '../components/label/labelError'
-
+import { cartContext } from '../Contexts/cartContext'
+import { useNavigate } from 'react-router-dom'
+import { PixLogo } from '../assets/icons/pix'
+import { CardIcon } from '../assets/icons/card'
+import { MoneyIcon } from '../assets/icons/money'
 export function Scheduling() {
+  const {
+    productFilterWithoutValue,
+    allProductsGroup,
+    filterValue,
+    mutatePostScheduling,
+  } = React.useContext(cartContext)
+  const Navigate = useNavigate()
   const [selectedTime, setSelectedTime] = useState(null)
   const [dateOfScheduling, setDateOfScheduling] = React.useState(null)
+  const [paymentMethod, setPaymentMethod] = React.useState(null)
   const [errorValidate, setErrorValidate] = React.useState({
     product: null,
     date: null,
     hours: null,
   })
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: 'Camiseta',
-      price: 39.9,
-      quantity: 1,
-      imageUrl:
-        'https://static.wixstatic.com/media/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg/v1/fill/w_500,h_500,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg',
-    },
-    {
-      id: 2,
-      name: 'Camiseta',
-      price: 39.9,
-      quantity: 1,
-      imageUrl:
-        'https://static.wixstatic.com/media/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg/v1/fill/w_500,h_500,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg',
-    },
-    {
-      id: 3,
-      name: 'Camiseta',
-      price: 39.9,
-      quantity: 1,
-      imageUrl:
-        'https://static.wixstatic.com/media/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg/v1/fill/w_500,h_500,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg',
-    },
-  ])
+
+  console.log(productFilterWithoutValue)
+  console.log(filterValue?.[0]?.[1])
+
+  React.useEffect(() => {
+    if (!allProductsGroup) {
+      Navigate('/')
+    }
+  }, [])
+
+  function handleSelectedMethodPayment(event) {
+    event.preventDefault()
+    const payment = event.target.dataset.value
+    setPaymentMethod(payment)
+  }
+  // const [products, setProducts] = useState([
+  //   {
+  //     id: 1,
+  //     name: 'Camiseta',
+  //     price: 39.9,
+  //     quantity: 1,
+  //     imageUrl:
+  //       'https://static.wixstatic.com/media/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg/v1/fill/w_500,h_500,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Camiseta',
+  //     price: 39.9,
+  //     quantity: 1,
+  //     imageUrl:
+  //       'https://static.wixstatic.com/media/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg/v1/fill/w_500,h_500,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg',
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Camiseta',
+  //     price: 39.9,
+  //     quantity: 1,
+  //     imageUrl:
+  //       'https://static.wixstatic.com/media/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg/v1/fill/w_500,h_500,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/5b4f0d_a24990f48954407c94bf4044af5103c4~mv2.jpg',
+  //   },
+  // ])
   // efetuando as restrições de data
   const today = new Date()
   const maxDate = new Date(today)
@@ -61,6 +88,7 @@ export function Scheduling() {
     const selectedDate = event.target.value
     if (selectedDate >= todayStr && selectedDate <= maxDateStr) {
       setDateOfScheduling(selectedDate)
+      setErrorValidate((prevState) => ({ ...prevState, date: null }))
     } else {
       setErrorValidate((prevState) => ({
         ...prevState,
@@ -69,28 +97,22 @@ export function Scheduling() {
     }
   }
 
-  const calculateTotal = () => {
-    return products
-      .reduce((total, product) => total + product.price * product.quantity, 0)
-      .toFixed(2)
-  }
+  // const updateQuantity = (productId, newQuantity) => {
+  //   setProducts((prevProducts) => {
+  //     return prevProducts.map((product) => {
+  //       if (product.id === productId) {
+  //         return { ...product, quantity: newQuantity }
+  //       }
+  //       return product
+  //     })
+  //   })
+  // }
 
-  const updateQuantity = (productId, newQuantity) => {
-    setProducts((prevProducts) => {
-      return prevProducts.map((product) => {
-        if (product.id === productId) {
-          return { ...product, quantity: newQuantity }
-        }
-        return product
-      })
-    })
-  }
-
-  const removeProduct = (productId) => {
-    setProducts((prevProducts) =>
-      prevProducts.filter((product) => product.id !== productId),
-    )
-  }
+  // const removeProduct = (productId) => {
+  //   setProducts((prevProducts) =>
+  //     prevProducts.filter((product) => product.id !== productId),
+  //   )
+  // }
 
   const handleTimeSelection = (event, time) => {
     event.preventDefault()
@@ -103,13 +125,18 @@ export function Scheduling() {
       if (!selectedTime || !dateOfScheduling) {
         console.log('teste')
       }
+
       setErrorValidate({
         date: null,
         hours: null,
         product: null,
       })
-      setDateOfScheduling(null)
-      setSelectedTime(null)
+
+      mutatePostScheduling.mutate({
+        tipoPagamento: paymentMethod,
+        data: dateOfScheduling,
+        virandoSocio: false,
+      })
     }
   }
 
@@ -122,37 +149,36 @@ export function Scheduling() {
         <p>
           Tela inicial{' > '}Camiseta{' > '}Agendamento
         </p>
-        <h1 className=" text-h5">Total: R${calculateTotal()}</h1>
+        <h1 className=" text-h5">Total: R$</h1>
         <ul className=" ">
-          {products.map((product) => (
+          {productFilterWithoutValue?.map((product) => (
             <li
-              className=" mb-4 flex h-[119px] w-full items-center justify-around rounded border border-cinza-100 bg-cinza-50"
-              key={product.id}
+              className=" mb-4 flex h-[119px] w-full items-center  justify-start rounded border border-cinza-100 bg-cinza-50"
+              key={product[1].idProduto}
             >
-              <img
-                className="h-[84.73px] w-[83px]"
-                src={product.imageUrl}
-                alt={product.name}
-              />
-              <div className="text-center">
-                <p>{product.name}</p>
-                <p>R${(product.price * product.quantity).toFixed(2)}</p>
+              <div className=" flex items-center justify-start">
+                <img
+                  className="h-[84.73px] w-[83px]"
+                  src={product[1].foto}
+                  alt={product[1].nome}
+                />
+                <p className=" text-center">{product[1].nome}</p>
               </div>
-              <Stepper
+              {/* <Stepper
                 min={1}
                 max={10}
                 step={1}
                 initial={product.quantity}
-                onChange={(newQuantity) =>
-                  updateQuantity(product.id, newQuantity)
-                }
-              />
-              <button
+                // onChange={(newQuantity) =>
+                //   // updateQuantity(product.id, newQuantity)
+                // }
+              /> */}
+              {/* <button
                 className="text-purple-500 border-none bg-transparent hover:cursor-pointer"
-                onClick={() => removeProduct(product.id)}
+                // onClick={() => removeProduct(product.id)}
               >
                 Remover
-              </button>
+              </button> */}
             </li>
           ))}
         </ul>
@@ -189,7 +215,60 @@ export function Scheduling() {
           </ul>
           {errorValidate.hours && <LabelError error={errorValidate.hours} />}
         </section>
-        <PrimaryButton text="Finalizae agendamento" />
+
+        <section className=" space-y-5" aria-labelledby="payment">
+          <h2 className=" max-w-40 text-sub2" id="payment">
+            Formas de pagamento
+          </h2>
+          <div className=" flex flex-wrap gap-4">
+            <Square
+              callBackClick={handleSelectedMethodPayment}
+              isSelect={paymentMethod === 'pix'}
+              value="pix"
+              label="Pix"
+            >
+              <PixLogo />
+            </Square>
+            <Square
+              callBackClick={handleSelectedMethodPayment}
+              isSelect={paymentMethod === 'cartão de crédito'}
+              value="cartão de crédito"
+              label="Cartão de crédito"
+            >
+              <CardIcon />
+            </Square>
+            <Square
+              callBackClick={handleSelectedMethodPayment}
+              isSelect={paymentMethod === 'cartão de débito'}
+              value="cartão de débito"
+              label="Cartão de débito"
+            >
+              <CardIcon />
+            </Square>
+            <Square
+              callBackClick={handleSelectedMethodPayment}
+              isSelect={paymentMethod === 'dinheiro'}
+              value="dinheiro"
+              label="Dinheiro"
+            >
+              <MoneyIcon />
+            </Square>
+          </div>
+
+          <div>
+            {paymentMethod === 'dinheiro' && (
+              <>
+                <label className=" flex items-center">
+                  Desejo troco
+                  <input type="checkBox" />
+                </label>
+                <input type="text" />
+              </>
+            )}
+          </div>
+        </section>
+
+        <PrimaryButton text="Finalizar agendamento" />
       </form>
     </main>
   )
