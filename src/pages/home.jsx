@@ -12,6 +12,7 @@ import { productContext } from '../Contexts/productContext'
 export function Home() {
   const navigate = useNavigate()
   const { groupProduct } = React.useContext(productContext)
+  console.log(groupProduct)
 
   function handleClickVisualizationProduct(event, productSelected) {
     navigate(`/produto/${productSelected}`)
