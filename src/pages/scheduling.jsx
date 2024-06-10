@@ -30,6 +30,7 @@ export function Scheduling() {
   console.log(productFilterWithoutValue)
   console.log(filterValue?.[0]?.[1])
 
+
   React.useEffect(() => {
     if (!allProductsGroup) {
       Navigate('/')
@@ -149,7 +150,7 @@ export function Scheduling() {
         <p>
           Tela inicial{' > '}Camiseta{' > '}Agendamento
         </p>
-        <h1 className=" text-h5">Total: R$</h1>
+        <h1 className=" text-h5">Total: R${ }</h1>
         <ul className=" ">
           {productFilterWithoutValue?.map((product) => (
             <li
