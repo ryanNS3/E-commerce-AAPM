@@ -47,9 +47,9 @@ export function NavBar() {
                 ) : dataPerfilUser?.photo ? (
                   <img src={dataPerfilUser.photo} alt="" />
                 ) : (
-                  <div className=" h-11 w-11 rounded-full bg-cinza-100">
+                  <Link to={'/'}>
                     <OneLetterPerfil name={dataPerfilUser?.name} />
-                  </div>
+                  </Link>
                 )}
               </li>
             </div>

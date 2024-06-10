@@ -2,7 +2,7 @@ import React, { createContext, useMemo } from 'react'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useAxios from '../hooks/useAxios'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toastifyContext } from './toastifyContext'
 import { useCookies } from '../hooks/useCookies'
 import { pagesContext } from './pagesContext'
@@ -12,6 +12,7 @@ export const UserGlobal = createContext()
 export const UserProvider = ({ children }) => {
   const BASE_URL = import.meta.env.VITE_API_URL
   const { handleBackClick } = React.useContext(pagesContext)
+  const queryClient = useQueryClient()
   const { requestApi } = useAxios()
   const [userString, setUserString] = useCookies('user', null)
   const [token, setToken] = useCookies('token', null)
@@ -99,6 +100,7 @@ export const UserProvider = ({ children }) => {
       setToken(null)
       setDataPerfilUser(null)
       Notification('succes', 'Usuário deslogado com sucesso')
+      queryClient.invalidateQueries(['allProductCart'])
     },
     onError: () => {
       Notification(

@@ -7,13 +7,21 @@ import { cartContext } from '../Contexts/cartContext'
 
 export function Cart() {
   const Navigation = useNavigate()
-  const { allProductsGroup } = React.useContext(cartContext)
+  const { allProductsGroup, mutateDeleteProductCart } = React.useContext(cartContext)
   const { userLogin, token } = useContext(UserGlobal)
-  console.log(userLogin, token)
-  const productFilterWithoutValue = allProductsGroup?.filter((item) => item[0] != 'valor')
+
+  const productFilterWithoutValue = allProductsGroup?.filter(
+    (item) => item[0] != 'valor',
+  )
   const filterValue = allProductsGroup?.filter((item) => item[0] === 'valor')
-  
-  console.log(allProductsGroup)
+
+  function handleRemoveProductFromCart(event) {
+    event.preventDefault()
+    const { target } = event
+    const idProduct = { idProduto: target.dataset.productid }
+    mutateDeleteProductCart.mutate(idProduct)
+  }
+
   return (
     <main className=" flex flex-col">
       <header
@@ -31,41 +39,55 @@ export function Cart() {
           />
         </div>
       </header>
-      <section className="">
-        {/* {allProductsGroup &&
-          allProductsGroup.map((product) => {
-            <article className=" justify-between rounded-lg border-2 border-cinza-100 p-8 sm:flex sm:items-start md:items-center">
-              <div className=" gap-8 sm:flex sm:justify-between">
-                <div className=" min-w-16 max-w-24 ">
-                  <img className="w-full" src={product[1].fotos[0]} alt="" />
-                </div>
+      <section className=" mt-6 flex flex-col gap-4">
+        {productFilterWithoutValue &&
+          productFilterWithoutValue.map((product) => {
+            return (
+              <article
+                className=" justify-between rounded-lg border-2 border-cinza-100 p-8 duration-200 hover:border-cinza-200 sm:flex sm:items-start md:items-center"
+                key={product[0] + product[1].nome}
+              >
+                <div className=" gap-8 sm:flex sm:justify-between">
+                  <div className=" min-w-16 max-w-24 ">
+                    <img className="w-full" src={product[1].foto} alt="" />
+                  </div>
 
-                <div className=" flex flex-col  justify-between">
-                  <div className=" flex flex-col gap-2">
-                    <h2 className=" text-sub1">Camiseta Branca</h2>
-                    <p className=" text-fun2">R$33,90</p>
+                  <div className=" flex flex-col  justify-between">
+                    <div className=" flex flex-col gap-2">
+                      <h2 className=" text-sub1">{product[1].nome}</h2>
+                      <p className=" text-fun2">R${product[1].valor}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <select className=" focus:border-cinza-100 active:border-cinza-100">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-              </select>
+                <select
+                  value={product[1].quantidade}
+                  data-productamount={product[1].idProduto}
+                  onChange={(event) => console.log(event)}
+                  className=" focus:border-cinza-100 active:border-cinza-100"
+                >
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
+                </select>
 
-              <button className=" rounded-lg p-2 text-ct3 text-rosa-300 hover:bg-rosa-300 hover:text-branco">
-                Remover
-              </button>
-            </article>
-          })} */}
+                <button
+                  data-productid={product[1].idProduto}
+                  onClick={handleRemoveProductFromCart}
+                  className=" rounded-lg p-2 text-ct3 text-rosa-300 hover:bg-rosa-300 hover:text-branco"
+                >
+                  Remover
+                </button>
+              </article>
+            )
+          })}
         {!userLogin && !token ? (
           <section className=" flex h-full w-full flex-col items-center justify-center ">
             <h2 className=" text-ct2">
