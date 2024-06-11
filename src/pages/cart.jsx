@@ -13,7 +13,6 @@ export function Cart() {
     productFilterWithoutValue,
   } = React.useContext(cartContext)
   const { userLogin, token } = useContext(UserGlobal)
-  console.log(productFilterWithoutValue)
 
   function handleRemoveProductFromCart(event) {
     event.preventDefault()
