@@ -69,20 +69,20 @@ export function CartProvider({ children }) {
   }
 
   async function FetchPostSchedulingCart(dataOfScheduling) {
-    try {
+   
       const requestPostScheduling = await requestApi(
         `${BASE_URL}/aluno/CarrinhoCompras/`,
         dataOfScheduling,
+        "POST",
         {
           authorization: `bearer ${token}`,
           id_aluno: user,
         },
       )
+      console.log(requestPostScheduling)
 
       return requestPostScheduling
-    } catch (error) {
-      console.log(error)
-    }
+  
   }
 
   const queryAllProductCart = useQuery({
@@ -138,8 +138,8 @@ export function CartProvider({ children }) {
     const [filterValue, setFilterValue] = useState()
 
     useEffect(() => {
+      console.log(queryAllProductCart)
       if (queryAllProductCart.data) {
-        console.log(queryAllProductCart)
         const products = Object.entries(
           queryAllProductCart?.data?.json?.response,
         )
