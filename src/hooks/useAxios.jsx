@@ -19,7 +19,8 @@ const useAxios = () => {
       setDados(res.data)
       return { res, json: res.data }
     } catch (err) {
-      setErro(err.message)
+      throw err
+      // setErro(err.message)
     } finally {
       setLoading(false)
     }
