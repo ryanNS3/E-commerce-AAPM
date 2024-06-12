@@ -1,45 +1,45 @@
-import React, { useState } from "react";
-import { Stepper } from "../components/stepper/Stepper";
-import { Square, SquareFillMode } from "../components/square";
-import { InputCalendar } from "../components/inputs/inputCalendar";
-import { Label } from "../components/label";
-import { PrimaryButton } from "../components/buttons/primaryButton";
-import { LabelError } from "../components/label/labelError";
-import { cartContext } from "../Contexts/cartContext";
-import { useNavigate } from "react-router-dom";
-import { PixLogo } from "../assets/icons/pix";
-import { CardIcon } from "../assets/icons/card";
-import { MoneyIcon } from "../assets/icons/money";
-import { InputText } from "../components/inputs/inputText";
+import React, { useState } from 'react'
+import { Stepper } from '../components/stepper/Stepper'
+import { Square, SquareFillMode } from '../components/square'
+import { InputCalendar } from '../components/inputs/inputCalendar'
+import { Label } from '../components/label'
+import { PrimaryButton } from '../components/buttons/primaryButton'
+import { LabelError } from '../components/label/labelError'
+import { cartContext } from '../Contexts/cartContext'
+import { useNavigate } from 'react-router-dom'
+import { PixLogo } from '../assets/icons/pix'
+import { CardIcon } from '../assets/icons/card'
+import { MoneyIcon } from '../assets/icons/money'
+import { InputText } from '../components/inputs/inputText'
 export function Scheduling() {
   const {
     productFilterWithoutValue,
     allProductsGroup,
     filterValue,
     mutatePostScheduling,
-  } = React.useContext(cartContext);
-  const Navigate = useNavigate();
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [dateOfScheduling, setDateOfScheduling] = React.useState(null);
-  const [paymentMethod, setPaymentMethod] = React.useState(null);
-  const [changeOfMoney, setChangeOfMoney] = React.useState(0);
-  const [isChangeOfMoney, setIsChangeOfMoney] = React.useState(false);
+  } = React.useContext(cartContext)
+  const Navigate = useNavigate()
+  const [selectedTime, setSelectedTime] = useState(null)
+  const [dateOfScheduling, setDateOfScheduling] = React.useState(null)
+  const [paymentMethod, setPaymentMethod] = React.useState(null)
+  const [changeOfMoney, setChangeOfMoney] = React.useState(0)
+  const [isChangeOfMoney, setIsChangeOfMoney] = React.useState(false)
   const [errorValidate, setErrorValidate] = React.useState({
     product: null,
     date: null,
     hours: null,
-  });
+  })
   console.log(isChangeOfMoney)
   React.useEffect(() => {
     if (!allProductsGroup) {
-      Navigate("/");
+      Navigate('/')
     }
-  }, []);
+  }, [])
 
   function handleSelectedMethodPayment(event) {
-    event.preventDefault();
-    const payment = event.target.dataset.value;
-    setPaymentMethod(payment);
+    event.preventDefault()
+    const payment = event.target.dataset.value
+    setPaymentMethod(payment)
   }
   // const [products, setProducts] = useState([
   //   {
@@ -68,32 +68,32 @@ export function Scheduling() {
   //   },
   // ])
   // efetuando as restrições de data
-  const today = new Date();
-  const maxDate = new Date(today);
+  const today = new Date()
+  const maxDate = new Date(today)
   // disponibilizando datas no limte de 7 dias após a data atual
-  maxDate.setDate(maxDate.getDate() + 5);
+  maxDate.setDate(maxDate.getDate() + 5)
 
   const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
   // data mínima
-  const todayStr = formatDate(today);
+  const todayStr = formatDate(today)
   // data máxima
-  const maxDateStr = formatDate(maxDate);
+  const maxDateStr = formatDate(maxDate)
 
   function handleChangeDateScheduling(event) {
-    const selectedDate = event.target.value;
+    const selectedDate = event.target.value
     if (selectedDate >= todayStr && selectedDate <= maxDateStr) {
-      setDateOfScheduling(selectedDate);
-      setErrorValidate((prevState) => ({ ...prevState, date: null }));
+      setDateOfScheduling(selectedDate)
+      setErrorValidate((prevState) => ({ ...prevState, date: null }))
     } else {
       setErrorValidate((prevState) => ({
         ...prevState,
         date: `selecione apenas datas com no máximo 7 dias após  ${todayStr} `,
-      }));
+      }))
     }
   }
 
@@ -115,31 +115,31 @@ export function Scheduling() {
   // }
 
   const handleTimeSelection = (event, time) => {
-    event.preventDefault();
-    setSelectedTime(time === selectedTime ? null : time);
-  };
+    event.preventDefault()
+    setSelectedTime(time === selectedTime ? null : time)
+  }
 
   function handleSubmitSchedulingBuy(event) {
-    event.preventDefault();
+    event.preventDefault()
     if (!errorValidate.date && !errorValidate.hours && !errorValidate.product) {
       if (!selectedTime || !dateOfScheduling) {
-        console.log("teste");
+        console.log('teste')
       }
 
       setErrorValidate({
         date: null,
         hours: null,
         product: null,
-      });
+      })
 
       mutatePostScheduling.mutate({
         tipoPagamento: paymentMethod,
         data: dateOfScheduling,
         virandoSocio: false,
-      });
+      })
     }
   }
-  console.log(isChangeOfMoney);
+  console.log(isChangeOfMoney)
   return (
     <main
       aria-labelledby="schedulingBuy"
@@ -147,7 +147,7 @@ export function Scheduling() {
     >
       <section className=" space-y-6">
         <p>
-          Tela inicial{" > "}Camiseta{" > "}Agendamento
+          Tela inicial{' > '}Camiseta{' > '}Agendamento
         </p>
         <h1 className=" text-h5">Total: R${}</h1>
         <ul className=" ">
@@ -223,7 +223,7 @@ export function Scheduling() {
           <div className=" flex flex-wrap gap-4">
             <Square
               callBackClick={handleSelectedMethodPayment}
-              isSelect={paymentMethod === "pix"}
+              isSelect={paymentMethod === 'pix'}
               value="pix"
               label="Pix"
             >
@@ -231,37 +231,37 @@ export function Scheduling() {
             </Square>
             <Square
               callBackClick={handleSelectedMethodPayment}
-              isSelect={paymentMethod === "cartão de crédito"}
-              value="cartão de crédito"
-              label="Cartão de crédito"
+              isSelect={paymentMethod === 'crédito'}
+              value="crédito"
+              label="crédito"
             >
               <CardIcon />
             </Square>
             <Square
               callBackClick={handleSelectedMethodPayment}
-              isSelect={paymentMethod === "cartão de débito"}
-              value="cartão de débito"
-              label="Cartão de débito"
+              isSelect={paymentMethod === 'débito'}
+              value="débito"
+              label="débito"
             >
               <CardIcon />
             </Square>
             <Square
               callBackClick={handleSelectedMethodPayment}
-              isSelect={paymentMethod === "dinheiro"}
+              isSelect={paymentMethod === 'dinheiro'}
               value="dinheiro"
               label="Dinheiro"
             >
               <MoneyIcon />
             </Square>
           </div>
-          
+
           <div>
-            {paymentMethod === "dinheiro" && (
+            {paymentMethod === 'dinheiro' && (
               <>
                 <label className=" flex items-center">
                   Desejo troco
                   <input
-                    value={"troco"}
+                    value={'troco'}
                     checked={isChangeOfMoney}
                     onChange={() => setIsChangeOfMoney(!isChangeOfMoney)}
                     type="checkBox"
@@ -269,10 +269,10 @@ export function Scheduling() {
                 </label>
                 {isChangeOfMoney && (
                   <>
-                    <Label htmlFor={"value"}>Valor a pagar</Label>
+                    <Label htmlFor={'value'}>Valor a pagar</Label>
                     <InputText
                       value={changeOfMoney}
-                      id={"value"}
+                      id={'value'}
                       onChange={({ target }) => setChangeOfMoney(target.value)}
                     />
                   </>
@@ -285,5 +285,5 @@ export function Scheduling() {
         <PrimaryButton text="Finalizar agendamento" />
       </form>
     </main>
-  );
+  )
 }

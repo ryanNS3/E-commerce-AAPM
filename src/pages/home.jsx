@@ -58,6 +58,7 @@ export function Home() {
                 name={products.nome + index}
                 key={products.nome}
                 price={products.valor}
+                photo={products.produtos[0].fotos}
                 onCLick={(e) =>
                   handleClickVisualizationProduct(e, products.nome)
                 }
