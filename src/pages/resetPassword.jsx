@@ -1,131 +1,100 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { toastifyContext } from '../Contexts/toastifyContext'
-import { EmployeeContext } from '../../context/Employee'
-import { Link, useParams, useNavigate } from 'react-router-dom'
-import { PinkButton } from '../../components/Buttons/pinkButton'
-import { InputText } from '../../components/Inputs/input-text/inputTextComp'
+import React from 'react'
+import { IlustrationNotebook } from '../assets/ilustration/ilustrationNotebook'
+import { PrimaryButton } from '../components/buttons/primaryButton/index'
+import { InputText } from '../components/inputs/inputText'
+import { Label } from '../components/label/index'
+import { emailSchema, passwordSchema } from '../utils/zodValidate'
+import { UserGlobal } from '../Contexts/userContext'
 
-
-function validatePasswords(password, confirmPassword) {
-  const passwordValidation = passwordSchema.safeParse(password)
-  if (!passwordValidation.success) {
-    return passwordValidation.error.errors[0].message
-  }
-  if (password !== confirmPassword) {
-    return 'As senhas não coincidem.'
-  }
-  return null
-}
 export function ResetPassword() {
-  const { ResetPassword } = useContext(EmployeeContext)
-  const { Notification } = useContext(toastifyContext)
-  const { token } = useParams()
-  const navigate = useNavigate()
+  const { userResetPasswordMutate } = React.useContext(UserGlobal)
+  const [emailUser, setEmailUser] = React.useState('')
+  const [isActiveButton, setIsActiveButton] = React.useState(true)
+  const [errorValidate, setErrorValidate] = React.useState({
+    email: null,
+  })
 
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-  const [inputError, setInputError] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (!token) {
-      navigate('/login')
-    }
-  }, [token, navigate])
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
-    setInputError(false)
-  }
-
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value)
-    setInputError(false)
-  }
-
-  const handleSubmit = async (event) => {
+  function handleSubmitLoginModal(event) {
     event.preventDefault()
-
-    const validationError = validatePasswords(password, confirmPassword)
-    if (validationError) {
-      setErrorMessage(validationError)
-      setInputError(true)
-      return
+    setIsActiveButton(true)
+    const dataUserLogin = {
+      email: emailUser,
     }
-
-    setLoading(true)
     try {
-      const success = await ResetPassword(token, password)
-
-      if (!success) {
-        throw new Error('Erro ao redefinir a senha.')
-      }
-
-      Notification('sucess', 'Senha Atualizada com sucesso')
-      setLoading(false)
-      navigate('/login')
+      // validação
+      // loginSchema.parse({
+      //   email: emailUser,
+      //   password: passwordUser,
+      // })
+      // função de requisição
+      userResetPasswordMutate.mutate(dataUserLogin)
     } catch (error) {
-      setLoading(false)
-      setErrorMessage(
-        error.message ||
-          'Erro durante a redefinição da senha. Por favor, tente novamente.',
-      )
+      error.errors.forEach((err) => {
+        if (err.path?.join() === 'email') {
+          setErrorValidate((prevState) => ({
+            ...prevState,
+            email: err.message,
+          }))
+        } else if (err.path?.join() === 'password') {
+          setErrorValidate((prevState) => ({
+            ...prevState,
+            password: err.message,
+          }))
+        }
+      })
+    } finally {
+      setIsActiveButton(false)
     }
   }
+
+  function handleChangeEmailLogin({ target }) {
+    setEmailUser(target.value)
+    try {
+      emailSchema.parse(target.value)
+      setErrorValidate((prevState) => ({ ...prevState, email: null }))
+    } catch (error) {
+      const message = error.errors[1]
+        ? error.errors[1].message
+        : error.errors[0].message
+      setErrorValidate((prevState) => ({ ...prevState, email: message }))
+      console.log(message)
+    }
+  }
+
+  React.useEffect(() => {
+    if (errorValidate.email || !emailUser) {
+      setIsActiveButton(true)
+    } else {
+      setIsActiveButton(false)
+    }
+  }, [errorValidate, emailUser])
 
   return (
-    <div className="flex min-h-screen flex-col bg-preto md:h-screen md:flex-row">
-      <div className="flex min-h-screen w-full flex-col justify-start bg-preto pl-10">
-        <h1 className="pt-20 text-h5 text-cinza-50">Definir Nova Senha</h1>
-        <p className="text-cp2 w-3/4 pt-6 text-cinza-50">
-          Por favor, insira sua nova senha nos campos designados.
-        </p>
-      </div>
+    <div className=" py-4 md:grid md:grid-cols-2   ">
+      <section className=" hidden w-full items-center justify-center md:flex ">
+        <IlustrationNotebook />
+      </section>
 
-      <div className="mt-12 flex min-h-screen w-full flex-col items-center justify-center rounded-t-[16px] bg-cinza-50 pl-6 pt-10 md:mt-0 md:items-start md:rounded-l-[16px] md:pl-12 md:pt-0">
-        <h3 className="mb-8 text-h3">Nova Senha</h3>
-        <form
-          onSubmit={handleSubmit}
-          className="flex w-3/4 flex-col gap-4"
-          noValidate
-        >
-          <InputText
-            id="password"
-            type="password"
-            name="Senha"
-            value={password}
-            onChange={handlePasswordChange}
-            placeholder="Nova Senha"
-            required={true}
-            disabled={loading}
-            error={inputError}
-          />
-          <InputText
-            id="confirm-password"
-            type="password"
-            name="Confirmar senha"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-            placeholder="Confirmar Senha"
-            required={true}
-            disabled={loading}
-            error={inputError}
-          />
-          {errorMessage && (
-            <p className="text-fun2 text-vermelho-300">{errorMessage}</p>
-          )}
-          <Link to="/login" className="mt-4 text-start text-fun2 text-rosa-400">
-            Voltar para Login
-          </Link>
-          <PinkButton
-            text="Redefinir Senha"
-            size="medium"
-            align="end"
-            loading={loading}
-          />
-        </form>
-      </div>
+      <form
+        className=" flex flex-col space-y-11"
+        onSubmit={handleSubmitLoginModal}
+      >
+        <h4 className="  text-h5">Restaurar senha</h4>
+        <div className=" space-y-4">
+          <div>
+            <Label htmlFor="emailLogin" marginButtom={'4'}>
+              Email
+            </Label>
+            <InputText
+              id="emailLogin"
+              value={emailUser}
+              onChange={handleChangeEmailLogin}
+              error={errorValidate.email}
+            />
+          </div>
+        </div>
+        <PrimaryButton disabled={isActiveButton} text="Confirmar" />
+      </form>
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { PixLogo } from '../assets/icons/pix'
 import { CardIcon } from '../assets/icons/card'
 import { MoneyIcon } from '../assets/icons/money'
+import { InputText } from '../components/inputs/inputText'
 export function Scheduling() {
   const {
     productFilterWithoutValue,
@@ -21,15 +22,14 @@ export function Scheduling() {
   const [selectedTime, setSelectedTime] = useState(null)
   const [dateOfScheduling, setDateOfScheduling] = React.useState(null)
   const [paymentMethod, setPaymentMethod] = React.useState(null)
+  const [changeOfMoney, setChangeOfMoney] = React.useState(0)
+  const [isChangeOfMoney, setIsChangeOfMoney] = React.useState(false)
   const [errorValidate, setErrorValidate] = React.useState({
     product: null,
     date: null,
     hours: null,
   })
-
-  console.log(productFilterWithoutValue)
-  console.log(filterValue?.[0]?.[1])
-
+  console.log(isChangeOfMoney)
   React.useEffect(() => {
     if (!allProductsGroup) {
       Navigate('/')
@@ -139,7 +139,7 @@ export function Scheduling() {
       })
     }
   }
-
+  console.log(isChangeOfMoney)
   return (
     <main
       aria-labelledby="schedulingBuy"
@@ -149,7 +149,7 @@ export function Scheduling() {
         <p>
           Tela inicial{' > '}Camiseta{' > '}Agendamento
         </p>
-        <h1 className=" text-h5">Total: R$</h1>
+        <h1 className=" text-h5">Total: R${}</h1>
         <ul className=" ">
           {productFilterWithoutValue?.map((product) => (
             <li
@@ -231,17 +231,17 @@ export function Scheduling() {
             </Square>
             <Square
               callBackClick={handleSelectedMethodPayment}
-              isSelect={paymentMethod === 'cartão de crédito'}
-              value="cartão de crédito"
-              label="Cartão de crédito"
+              isSelect={paymentMethod === 'crédito'}
+              value="crédito"
+              label="crédito"
             >
               <CardIcon />
             </Square>
             <Square
               callBackClick={handleSelectedMethodPayment}
-              isSelect={paymentMethod === 'cartão de débito'}
-              value="cartão de débito"
-              label="Cartão de débito"
+              isSelect={paymentMethod === 'débito'}
+              value="débito"
+              label="débito"
             >
               <CardIcon />
             </Square>
@@ -260,9 +260,23 @@ export function Scheduling() {
               <>
                 <label className=" flex items-center">
                   Desejo troco
-                  <input type="checkBox" />
+                  <input
+                    value={'troco'}
+                    checked={isChangeOfMoney}
+                    onChange={() => setIsChangeOfMoney(!isChangeOfMoney)}
+                    type="checkBox"
+                  />
                 </label>
-                <input type="text" />
+                {isChangeOfMoney && (
+                  <>
+                    <Label htmlFor={'value'}>Valor a pagar</Label>
+                    <InputText
+                      value={changeOfMoney}
+                      id={'value'}
+                      onChange={({ target }) => setChangeOfMoney(target.value)}
+                    />
+                  </>
+                )}
               </>
             )}
           </div>

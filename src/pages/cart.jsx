@@ -7,13 +7,12 @@ import { cartContext } from '../Contexts/cartContext'
 
 export function Cart() {
   const Navigation = useNavigate()
-  const { allProductsGroup, mutateDeleteProductCart } = React.useContext(cartContext)
+  const {
+    allProductsGroup,
+    mutateDeleteProductCart,
+    productFilterWithoutValue,
+  } = React.useContext(cartContext)
   const { userLogin, token } = useContext(UserGlobal)
-
-  const productFilterWithoutValue = allProductsGroup?.filter(
-    (item) => item[0] != 'valor',
-  )
-  const filterValue = allProductsGroup?.filter((item) => item[0] === 'valor')
 
   function handleRemoveProductFromCart(event) {
     event.preventDefault()
@@ -28,7 +27,7 @@ export function Cart() {
         className=" flex items-center justify-between"
         aria-labelledby="carrinho"
       >
-        <h1 className=" text-h5 md:text-h3 " id="carrinho">
+        <h1 className=" text-sub1 md:text-h3 " id="carrinho">
           Carrinho
         </h1>
         <div className=" flex justify-end">

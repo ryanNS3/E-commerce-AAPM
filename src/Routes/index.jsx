@@ -14,6 +14,8 @@ import { ToastContainer } from 'react-toastify'
 import { PageNotFound } from '../pages/pageNotFound'
 import { CartProvider } from '../Contexts/cartContext'
 import { PagesProvider } from '../Contexts/pagesContext'
+import { Perfil } from '../pages/perfil'
+import { ResetPassword } from '../pages/resetPassword'
 
 export function Router() {
   const queryClient = new QueryClient()
@@ -31,8 +33,11 @@ export function Router() {
                     <Route path="/" element={<StandardLayout />}>
                       <Route path="/" element={<Home />} />
                       <Route path="/login" element={<Login />} />
-                      <Route path="/pefil" element={<Login />} />
-                      <Route path="/restaurarSenha" element={<Login />} />
+                      <Route path="/perfil" element={<Perfil />} />
+                      <Route
+                        path="/restaurarSenha"
+                        element={<ResetPassword />}
+                      />
                       <Route path="/produto/:id" element={<Product />} />
                       <Route path="/carrinho" element={<Cart />} />
                       <Route
