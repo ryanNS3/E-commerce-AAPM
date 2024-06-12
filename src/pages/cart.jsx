@@ -27,7 +27,7 @@ export function Cart() {
         className=" flex items-center justify-between"
         aria-labelledby="carrinho"
       >
-        <h1 className=" text-h5 md:text-h3 " id="carrinho">
+        <h1 className=" text-sub1 md:text-h3 " id="carrinho">
           Carrinho
         </h1>
         <div className=" flex justify-end">
