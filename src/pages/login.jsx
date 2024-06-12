@@ -6,6 +6,7 @@ import { InputText } from '../components/inputs/inputText'
 import { Label } from '../components/label/index'
 import { emailSchema, passwordSchema } from '../utils/zodValidate'
 import { UserGlobal } from '../Contexts/userContext'
+import { Link } from 'react-router-dom'
 
 export function Login() {
   const { mutateUserLogin } = React.useContext(UserGlobal)
@@ -123,6 +124,9 @@ export function Login() {
               id="passwordLogin"
               error={errorValidate.password}
             />
+            <Link to={'/restaurarSenha'}>
+              Esqueceu da senha ou é novo aqui?
+            </Link>
           </div>
         </div>
         <PrimaryButton disabled={isActiveButton} text="Confirmar" />
