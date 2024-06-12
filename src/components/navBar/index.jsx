@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { LogoEnuxus } from '../../assets/logoEnexus'
 import { CartIcon } from '../../assets/cart'
 import { useMedia } from '../../hooks/useMedia'
@@ -10,6 +10,8 @@ import { OneLetterPerfil } from '../OneLetterPerfil'
 export function NavBar() {
   const [metchMediaMobile] = useMedia('(max-width:950px)')
   const { user, token, dataPerfilUser, userLogin } = useContext(UserGlobal)
+  const location = useLocation()
+  console.log(location)
   console.log(dataPerfilUser)
   return (
     <>
@@ -43,11 +45,11 @@ export function NavBar() {
               </li>
               <li aria-label="login">
                 {!userLogin && !token ? (
-                  <Link to={'/login'}>Fazer logins</Link>
+                  <Link to={'/perfil'}>Fazer login</Link>
                 ) : dataPerfilUser?.photo ? (
                   <img src={dataPerfilUser.photo} alt="" />
                 ) : (
-                  <Link to={'/'}>
+                  <Link to={'/perfil'}>
                     <OneLetterPerfil name={dataPerfilUser?.name} />
                   </Link>
                 )}
