@@ -49,7 +49,7 @@ export function Home() {
           <Search />
         </header>
         <section
-          className="flex max-w-full gap-6  overflow-x-scroll py-2"
+          className="flex max-w-full gap-6  overflow-x-scroll py-4"
           id="produtos"
         >
           {groupProduct &&
@@ -58,7 +58,7 @@ export function Home() {
                 name={products.nome + index}
                 key={products.nome}
                 price={products.valor}
-                photo={products.produtos[0].fotos}
+                photo={products.produtos[0].fotos[0]}
                 onCLick={(e) =>
                   handleClickVisualizationProduct(e, products.nome)
                 }
