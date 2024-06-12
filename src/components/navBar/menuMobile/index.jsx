@@ -36,7 +36,7 @@ export function MobileMenu() {
       opacity: 1,
       x: 0,
       transition: {
-        delay: i * 0.2, // delay each item by 0.2s more than the previous item
+        delay: i * 0.2,
       },
     }),
   }
