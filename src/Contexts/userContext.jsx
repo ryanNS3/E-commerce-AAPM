@@ -52,20 +52,14 @@ export const UserProvider = ({ children }) => {
     } catch (error) {}
   }
 
-  async function FetchResetPassword(token, senha){
-    try {
-      const res = await requestApi(
-        `${BASE_URL}/smtp/definirSenha/${token}`,
-        { senha },
-        `POST`,
-        null,
-      )
-      if (res && res.res.status === 200) {
-        return true
-      }
-    } catch (error) {
-      return false
-    }
+  async function FetchResetPassword(email) {
+    const res = await requestApi(
+      `${BASE_URL}/smtp/recuperarSenha`,
+      { email },
+      `POST`,
+      null,
+    )
+    return res
   }
 
   const mutateUserLogin = useMutation({
@@ -111,7 +105,13 @@ export const UserProvider = ({ children }) => {
   })
 
   const userResetPasswordMutate = useMutation({
-    mutationFn: FetchResetPassword
+    mutationFn: FetchResetPassword,
+    onSuccess: () => {
+      Notification('success', 'Email de verificação enviado com sucesso ')
+    },
+    onError: () => {
+      Notification('error', 'Erro ao enviar email, tente novamente')
+    },
   })
   return (
     <UserGlobal.Provider
@@ -121,6 +121,7 @@ export const UserProvider = ({ children }) => {
         dataPerfilUser,
         userLogin,
         mutateUserLogin,
+        userResetPasswordMutate,
         userLogoutMutate,
       }}
     >
