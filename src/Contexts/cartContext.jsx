@@ -69,20 +69,18 @@ export function CartProvider({ children }) {
   }
 
   async function FetchPostSchedulingCart(dataOfScheduling) {
-   
-      const requestPostScheduling = await requestApi(
-        `${BASE_URL}/aluno/CarrinhoCompras/`,
-        dataOfScheduling,
-        "POST",
-        {
-          authorization: `bearer ${token}`,
-          id_aluno: user,
-        },
-      )
-      console.log(requestPostScheduling)
+    const requestPostScheduling = await requestApi(
+      `${BASE_URL}/aluno/CarrinhoCompras/`,
+      dataOfScheduling,
+      'POST',
+      {
+        authorization: `bearer ${token}`,
+        id_aluno: user,
+      },
+    )
+    console.log(requestPostScheduling)
 
-      return requestPostScheduling
-  
+    return requestPostScheduling
   }
 
   const queryAllProductCart = useQuery({
@@ -139,15 +137,15 @@ export function CartProvider({ children }) {
 
     useEffect(() => {
       console.log(queryAllProductCart)
-      if (queryAllProductCart.data) {
-        const products = Object.entries(
+      if (queryAllProductCart?.data) {
+        const products = Object?.entries(
           queryAllProductCart?.data?.json?.response,
         )
         setAllProductsGroup(products)
         setProductFilterWithoutValue(
-          products.filter((item) => item[0] !== 'valor'),
+          products?.filter((item) => item[0] !== 'valor'),
         )
-        setFilterValue(products.filter((item) => item[0] === 'valor'))
+        setFilterValue(products?.filter((item) => item[0] === 'valor'))
       }
     }, [queryAllProductCart.data])
 

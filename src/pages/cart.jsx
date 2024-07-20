@@ -30,13 +30,15 @@ export function Cart() {
         <h1 className=" text-sub1 md:text-h3 " id="carrinho">
           Carrinho
         </h1>
-        <div className=" flex justify-end">
-          <PrimaryButton
-            action={() => Navigation('/agendamento')}
-            text="Finalizar agendamento"
-            disabled={!userLogin && !token}
-          />
-        </div>
+        {userLogin && (
+          <div className=" flex justify-end">
+            <PrimaryButton
+              action={() => Navigation('/agendamento')}
+              text="Finalizar agendamento"
+              disabled={!userLogin && !token}
+            />
+          </div>
+        )}
       </header>
       <section className=" mt-6 flex flex-col gap-4">
         {productFilterWithoutValue &&
@@ -94,7 +96,9 @@ export function Cart() {
               para acessar o seu carrinho
             </h2>
             {/* <PrimaryButton action={() => Navigation("/login")} text="Fazer login agora"/> */}
-            <Link className=" text-fun2">Ir para o login</Link>
+            <Link className=" text-fun2" to={'/login'}>
+              Ir para o login
+            </Link>
           </section>
         ) : (
           <div></div>

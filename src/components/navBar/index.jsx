@@ -45,7 +45,7 @@ export function NavBar() {
               </li>
               <li aria-label="login">
                 {!userLogin && !token ? (
-                  <Link to={'/perfil'}>Fazer login</Link>
+                  <Link to={'/login'}>Fazer login</Link>
                 ) : dataPerfilUser?.photo ? (
                   <img src={dataPerfilUser.photo} alt="" />
                 ) : (

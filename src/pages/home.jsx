@@ -52,7 +52,7 @@ export function Home() {
           className="flex max-w-full gap-6  overflow-x-scroll py-4"
           id="produtos"
         >
-          {groupProduct &&
+          {groupProduct ? (
             groupProduct.map((products, index) => (
               <CardProduct
                 name={products.nome + index}
@@ -63,7 +63,12 @@ export function Home() {
                   handleClickVisualizationProduct(e, products.nome)
                 }
               />
-            ))}
+            ))
+          ) : (
+            <div>
+              <h2>Nenhum produto disponível</h2>
+            </div>
+          )}
         </section>
       </main>
 

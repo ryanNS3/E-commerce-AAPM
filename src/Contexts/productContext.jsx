@@ -121,7 +121,7 @@ export function ProductProvider({ children }) {
       if (groupProduct && decodedProductParamsName) {
         setResultFilteredProduct(
           groupProduct?.filter(
-            (product) => product.nome === decodedProductParamsName,
+            (product) => product?.nome === decodedProductParamsName,
           ),
         )
       }
