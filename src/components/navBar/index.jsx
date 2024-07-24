@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { LogoEnuxus } from '../../assets/logoEnexus'
 import { CartIcon } from '../../assets/cart'
@@ -9,35 +9,48 @@ import { OneLetterPerfil } from '../OneLetterPerfil'
 
 export function NavBar() {
   const [metchMediaMobile] = useMedia('(max-width:950px)')
-  const { user, token, dataPerfilUser, userLogin } = useContext(UserGlobal)
-  const location = useLocation()
-  console.log(location)
-  console.log(dataPerfilUser)
+  const { token, dataPerfilUser, userLogin } = React.useContext(UserGlobal)
+  const [activePage, setActivePage] = React.useState("/")
+  const links = ['associado', 'produtos', 'sobre']
+  const page = useLocation()
+  console.log(page)
+  React.useEffect(() =>{
+    setActivePage(page.pathname)
+    switch (page.pathname){
+      case "/":
+    }
+  }, [page])
   return (
     <>
       {metchMediaMobile ? (
         <MobileMenu />
       ) : (
-        <nav aria-label="Navegação primária">
+        <nav
+          className=" sticky  left-0 right-0 top-8 w-full bg-[#f1f1f100] backdrop-blur-lg"
+          aria-label="Navegação primária"
+        >
           <ul className="flex w-full items-center justify-between text-cinza-500 ">
-            <div className="flex gap-8">
+            <ul className="flex gap-8">
+              <li className=" text-fun2">
+                <Link to={'/associado'}>Associado</Link>
+              </li>
               <li className="text-fun2 after:w-0 after:duration-200 hover:text-cinza-950 ">
                 <Link to={'/'}>Produtos</Link>
               </li>
               <li className=" text-fun2">
                 <Link to={'/'}>Sobre</Link>
               </li>
-            </div>
+            </ul>
 
-            <div>
+            <ul>
               <li>
-                <Link to={'/'}>
+                <Link className=' hover:rotate-2' to={'/'}>
                   <LogoEnuxus />
                 </Link>
               </li>
-            </div>
+            </ul>
 
-            <div className="flex items-center gap-8">
+            <ul className="flex items-center gap-8">
               <li>
                 <Link to={'/carrinho'}>
                   <CartIcon />
@@ -54,7 +67,7 @@ export function NavBar() {
                   </Link>
                 )}
               </li>
-            </div>
+            </ul>
           </ul>
         </nav>
       )}
