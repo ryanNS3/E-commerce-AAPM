@@ -16,6 +16,7 @@ import { CartProvider } from '../Contexts/cartContext'
 import { PagesProvider } from '../Contexts/pagesContext'
 import { Perfil } from '../pages/perfil'
 import { ResetPassword } from '../pages/resetPassword'
+import { Signature } from '../pages/signature'
 
 export function Router() {
   const queryClient = new QueryClient()
@@ -40,10 +41,7 @@ export function Router() {
                       />
                       <Route path="/produto/:id" element={<Product />} />
                       <Route path="/carrinho" element={<Cart />} />
-                      <Route
-                        path="/assinatura"
-                        element={<div>Assinatura</div>}
-                      />
+                      <Route path="/assinatura" element={<Signature />} />
                       <Route path="/agendamento" element={<Scheduling />} />
                       <Route path="/*" element={<PageNotFound />} />
                     </Route>
