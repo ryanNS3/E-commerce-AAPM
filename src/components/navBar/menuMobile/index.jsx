@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { LogoEnuxus } from '../../../assets/logoEnexus'
-import { CartIcon } from '../../../assets/cart'
 import { motion, AnimatePresence } from 'framer-motion'
 import { UserGlobal } from '../../../Contexts/userContext'
 import { OneLetterPerfil } from '../../OneLetterPerfil'
 
 export function MobileMenu() {
   const [isActiveMobileMenu, setIsActiveMobileMenu] = React.useState(false)
-  const { userLogin, token, dataPerfilUser, userLogoutMutate } = React.useContext(UserGlobal)
+  const { userLogin, token, dataPerfilUser, userLogoutMutate } =
+    React.useContext(UserGlobal)
 
   function handleSelectPage(page) {
     switch (page) {

@@ -8,11 +8,11 @@ import { Search } from '../components/search'
 import { CardProduct } from '../components/cards/cardProduct'
 import { useNavigate } from 'react-router-dom'
 import { productContext } from '../Contexts/productContext'
+import { PrimaryLink } from '../components/link'
 
 export function Home() {
   const navigate = useNavigate()
   const { groupProduct } = React.useContext(productContext)
-  console.log(groupProduct)
 
   function handleClickVisualizationProduct(event, productSelected) {
     navigate(`/produto/${productSelected}`)
@@ -30,7 +30,7 @@ export function Home() {
           </p>
 
           <div className=" flex items-center gap-4  ">
-            <PrimaryButton text="Assine agora" size="small" />
+            <PrimaryLink text="Assine agora" to="/assinatura" />
             <p className=" text-fun2">Ou</p>
             <a href={'#produtos'}>
               <PrimaryButton text="Compre agora" size="small" />
@@ -88,7 +88,7 @@ export function Home() {
           </div>
           <img className="h-full w-full" src={student} alt="aluno segurando " />
         </div>
-        <section className=" row-start-1 flex  flex-col items-end lg:col-start-2 lg:max-w-96 lg:justify-self-end">
+        <section className=" row-start-1 flex  flex-col items-end gap-4 lg:col-start-2 lg:max-w-96 lg:justify-self-end">
           <h1 className=" text-h4">Sobre nós</h1>
           <p className=" text-end">
             A APM é uma instituição auxiliar da escola, com objetivos sociais e
