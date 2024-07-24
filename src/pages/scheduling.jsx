@@ -11,13 +11,10 @@ import { PixLogo } from '../assets/icons/pix'
 import { CardIcon } from '../assets/icons/card'
 import { MoneyIcon } from '../assets/icons/money'
 import { InputText } from '../components/inputs/inputText'
+
 export function Scheduling() {
-  const {
-    productFilterWithoutValue,
-    allProductsGroup,
-    filterValue,
-    mutatePostScheduling,
-  } = React.useContext(cartContext)
+  const { productFilterWithoutValue, allProductsGroup, mutatePostScheduling } =
+    React.useContext(cartContext)
   const Navigate = useNavigate()
   const [selectedTime, setSelectedTime] = useState(null)
   const [dateOfScheduling, setDateOfScheduling] = React.useState(null)
@@ -29,12 +26,12 @@ export function Scheduling() {
     date: null,
     hours: null,
   })
-  console.log(isChangeOfMoney)
+
   React.useEffect(() => {
     if (!allProductsGroup) {
       Navigate('/')
     }
-  }, [])
+  }, [Navigate, allProductsGroup])
 
   function handleSelectedMethodPayment(event) {
     event.preventDefault()
